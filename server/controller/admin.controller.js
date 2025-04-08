@@ -49,4 +49,12 @@ const loginWithPassword = async (req, res) => {
   }
 };
 
-module.exports = { adminSignUp, loginWithPassword };
+const getProfileFromToken = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+module.exports = { adminSignUp, loginWithPassword, getProfileFromToken };

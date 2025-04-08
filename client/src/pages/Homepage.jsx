@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Tagline from "../components/Tagline";
 import Hero from "../components/Hero";
+import Items from "../components/Items";
 
 const Homepage = () => {
   return (
@@ -10,6 +11,7 @@ const Homepage = () => {
         <Navbar />
         <Tagline />
         <Hero />
+        <Items />
       </div>
     </>
   );

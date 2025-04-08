@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import logo from "../assets/gearboxlogo.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
+// import { useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  // const navigate= useNavigate()
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
@@ -18,6 +19,7 @@ const AdminLogin = () => {
 
       console.log(response.data.doc);
       alert(response.data.msg);
+      // navigate("/adminhome")
     } catch (error) {
       console.log(error);
     }
