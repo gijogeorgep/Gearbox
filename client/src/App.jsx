@@ -10,6 +10,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ProtectedRoute from "./components/protectedRouter";
 import BuyerSignUp from "./pages/BuyerSignUp";
+import SellerLogin from "./pages/SellerLogin";
+import SellerSignUp from "./pages/SellerSignUp";
+import SellerDasboard from "./pages/SellerDasboard";
 export const AdminContext = createContext();
 
 function App() {
@@ -42,7 +45,7 @@ function App() {
             <Route path="/" element={<Homepage />} />
             <Route path="/adminlogin" element={<AdminLogin />} />
             <Route path="adminsignup" element={<AdminSignUp />} />
-          
+
             <Route
               path="adminhome"
               element={
@@ -53,9 +56,15 @@ function App() {
             />
             <Route path="buyerlogin" element={<BuyerLogin />} />
             <Route path="buyersignup" element={<BuyerSignUp />} />
+            <Route path="sellerlogin" element={<SellerLogin />} />
+            <Route path="sellersignup" element={<SellerSignUp />} />
+            <Route path="sellerdashboard" element={<SellerDasboard />} />
           </Routes>
         </BrowserRouter>
       </AdminContext.Provider>
+   
+
+
     </>
   );
 }

@@ -2,18 +2,19 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import "./buyersignup.css";
 import { Link } from "react-router-dom";
-import buyerpic from "../assets/buyerform.png";
-const BuyerSignUp = () => {
+import sellerpic from "../assets/sellerform.jpg";
+
+const SellerSignUp = () => {
   return (
-    <>
-      <div className="bg-[#2d2d2d] min-h-screen text-white overflow-hidden">
+   <>
+   <div className="bg-[#2d2d2d] min-h-screen text-white overflow-hidden">
         <Navbar />
         <div className="flex justify-center items-center min-h-screen px-4 mt-10">
           {/* Main Container */}
           <div className="flex flex-col md:flex-row border border-white/10 rounded-[13px] overflow-hidden backdrop-blur-[0px] max-w-[900px] h-auto md:h-[650px]">
             {/* Left: Image */}
             <img
-              src={buyerpic}
+              src={sellerpic}
               alt="Signup Illustration"
               className="w-full md:w-[300px] h-[250px] md:h-full object-cover rounded-t-[13px] md:rounded-t-none md:rounded-l-[13px]"
             />
@@ -21,7 +22,7 @@ const BuyerSignUp = () => {
             {/* Right: Form */}
             <div className="w-full md:w-[500px] bg-white/10 px-6 sm:px-10 py-8 rounded-b-[13px] md:rounded-b-none md:rounded-r-[13px] flex flex-col justify-center ">
               <h2 className="text-xl sm:text-2xl font-semibold font-[montserrat] mb-6 tracking-wide text-center md:text-left ml-20 text-white">
-                BUYER SIGN UP
+                SELLER SIGN UP
               </h2>
 
               <form className="flex flex-col items-center md:items-start w-full">
@@ -95,7 +96,7 @@ const BuyerSignUp = () => {
               <div className="mt-6 text-sm font-light font-[montserrat] text-center w-full">
                 <p className="text-white mb-1">Already have an account?</p>
                 <Link
-                  to="/buyerlogin"
+                  to="/sellerlogin"
                   className="text-[#df1b1b] hover:underline font-medium"
                 >
                   Login
@@ -105,8 +106,8 @@ const BuyerSignUp = () => {
           </div>
         </div>
       </div>
-    </>
-  );
-};
+   </>
+  )
+}
 
-export default BuyerSignUp;
+export default SellerSignUp

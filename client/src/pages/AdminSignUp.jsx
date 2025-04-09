@@ -26,7 +26,7 @@ const AdminSignUp = () => {
       <div className="bg-[#2d2d2d] min-h-screen flex flex-col">
         <div className="w-full h-16 md:h-20 bg-white/10 backdrop-blur-sm flex items-center justify-between px-4 md:px-8 border-b border-white/10">
           <img
-            className="w-40 h-25
+            className="w-40 h-6
            "
             src={logo}
             alt=""

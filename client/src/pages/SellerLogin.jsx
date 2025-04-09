@@ -1,20 +1,18 @@
-import React from "react";
-import Navbar from "../components/Navbar";
-import buyerpic from "../assets/buyerform.png";
-import "./buyerlogin.css";
-import { Link } from "react-router-dom";
-
-const BuyerLogin = () => {
+import React from 'react'
+import sellerpic from "../assets/sellerform.jpg";
+import Navbar from '../components/Navbar';
+import { Link } from 'react-router-dom';
+const SellerLogin = () => {
   return (
     <>
-      <div className="bg-[#2d2d2d] min-h-screen text-white overflow-hidden">
+     <div className="bg-[#2d2d2d] min-h-screen text-white overflow-hidden">
         <Navbar />
         <div className="flex justify-center items-center h-[calc(100vh-64px)] px-4">
-          <div className="flex flex-col md:flex-row rounded-[13px] border border-white/10 backdrop-blur-[0px] overflow-hidden">
+          <div className="flex flex-col md:flex-row rounded-[13px] border border-white/10 backdrop-blur-[0px] overflow-hidden ">
             {/* Left: Form */}
             <div className="w-full md:w-[400px] h-auto md:h-[450px] bg-white/10 rounded-t-[13px] md:rounded-tl-[13px] md:rounded-bl-[13px] px-8 py-8 flex flex-col justify-center items-start">
               <h2 className="text-white text-xl font-semibold font-[montserrat] mb-6  ml-20 tracking-wide">
-                BUYER LOGIN
+                SELLER LOGIN
               </h2>
 
               <label className="text-white text-lg font-[montserrat] mb-2 tracking-wider font-medium">
@@ -39,12 +37,10 @@ const BuyerLogin = () => {
                 LOGIN
               </button>
 
+         
               <div className="mt-6 text-sm font-light font-[montserrat] text-center w-full">
                 <p className="text-white mb-1">Don't have an account ?</p>
-                <Link
-                  to="/buyersignup"
-                  className="text-[#df1b1b] hover:underline font-medium"
-                >
+                <Link to="/sellersignup" className="text-[#df1b1b] hover:underline font-medium">
                   Sign Up
                 </Link>
               </div>
@@ -53,14 +49,14 @@ const BuyerLogin = () => {
             {/* Right: Image */}
             <img
               className="w-full md:w-[250px] h-[250px] md:h-[450px] object-cover rounded-b-[13px] md:rounded-tr-[13px] md:rounded-br-[13px]"
-              src={buyerpic}
+              src={sellerpic}
               alt="Login Illustration"
             />
           </div>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default BuyerLogin;
+export default SellerLogin

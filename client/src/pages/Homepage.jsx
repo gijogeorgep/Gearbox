@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Tagline from "../components/Tagline";
 import Hero from "../components/Hero";
 import Items from "../components/Items";
+import FilterItem from "../components/FilterItem";
 
 const Homepage = () => {
   return (
@@ -12,6 +13,7 @@ const Homepage = () => {
         <Tagline />
         <Hero />
         <Items />
+        <FilterItem />
       </div>
     </>
   );
