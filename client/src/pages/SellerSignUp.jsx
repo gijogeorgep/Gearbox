@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import "./buyersignup.css";
+import "../components/fonts.css";
 import { Link } from "react-router-dom";
 import sellerpic from "../assets/sellerform.jpg";
 

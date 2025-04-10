@@ -4,6 +4,7 @@ import Tagline from "../components/Tagline";
 import Hero from "../components/Hero";
 import Items from "../components/Items";
 import FilterItem from "../components/FilterItem";
+import Cards from "../components/Cards";
 
 const Homepage = () => {
   return (
@@ -14,6 +15,17 @@ const Homepage = () => {
         <Hero />
         <Items />
         <FilterItem />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-4">
+          <Cards />
+          <Cards />
+          <Cards />
+          <Cards />
+          <Cards />
+          <Cards />
+          <Cards />
+          <Cards />
+          
+        </div>
       </div>
     </>
   );

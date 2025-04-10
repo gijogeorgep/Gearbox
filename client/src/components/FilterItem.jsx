@@ -1,73 +1,57 @@
 import React from "react";
-import searchicon from "../assets/search_icon.png";
-import "./navbar.css";
+import "./fonts.css";
+
 const FilterItem = () => {
   return (
-    <>
-      <div className="w-full max-w-[949px] mx-auto bg-transparent rounded-[10px]">
-        <h2 className="text-white text-xl font-normal font-[montserrat] tracking-wide mb-4">
+    <div className="w-full px-4 space-y-12 py-8">
+      {/* Filter By Items */}
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-white text-lg sm:text-xl font-normal font-[montserrat] mb-4">
           Filter By Items
         </h2>
-        <div className="flex flex-wrap gap-4">
-          {/* CAMERA */}
-          <button className="w-[137px] h-[41px] bg-white text-[#df1b1b] text-xl font-normal font-[montserrat] tracking-wide rounded-[10px]">
+        <div className="flex flex-wrap justify-start gap-3 sm:gap-4">
+          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-white text-[#df1b1b] text-sm sm:text-xl font-[montserrat] rounded-[10px]">
             CAMERA
           </button>
-
-          {/* TRIPOD */}
-          <button className="w-[153px] h-[41px] bg-[#df1b1b] text-white text-xl font-normal font-[montserrat] tracking-wide rounded-[10px]">
+          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
             TRIPOD
           </button>
-
-          {/* GIMBAL */}
-          <button className="w-[137px] h-[41px] bg-[#df1b1b] text-white text-xl font-normal font-[montserrat] tracking-wide rounded-[10px]">
+          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
             GIMBAL
           </button>
-
-          {/* LENS */}
-          <button className="w-[137px] h-[41px] bg-[#df1b1b] text-white text-xl font-normal font-[montserrat] tracking-wide rounded-[10px]">
+          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
             LENS
           </button>
-
-          {/* LIGHTS */}
-          <button className="w-[137px] h-[41px] bg-[#df1b1b] text-white text-xl font-normal font-[montserrat] tracking-wide rounded-[10px]">
+          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
             LIGHTS
           </button>
         </div>
       </div>
 
-      <div className="w-full max-w-[945px] mx-auto bg-transparent rounded-[10px] ">
-        <h2 className="text-white text-xl font-normal font-[montserrat] tracking-wide mb-4">
+      {/* Filter By Brands */}
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-white text-lg sm:text-xl font-normal font-[montserrat] mb-4">
           Filter By Brands
         </h2>
-        <div className="flex flex-wrap gap-4">
-          {/* SONY */}
-          <button className="w-[137px] h-[41px] bg-[#df1b1b] text-white text-xl font-normal font-[montserrat] tracking-wide rounded-[10px]">
+        <div className="flex flex-wrap justify-start gap-3 sm:gap-4">
+          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
             SONY
           </button>
-
-          {/* NIKON */}
-          <button className="w-[137px] h-[41px] bg-[#df1b1b] text-white text-xl font-normal font-[montserrat] tracking-wide rounded-[10px]">
+          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
             NIKON
           </button>
-
-          {/* CANNON */}
-          <button className="w-[137px] h-[41px] bg-white text-[#df1b1b] text-xl font-normal font-[montserrat] tracking-wide rounded-[10px]">
+          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-white text-[#df1b1b] text-sm sm:text-xl font-[montserrat] rounded-[10px]">
             CANNON
           </button>
-
-          {/* FUJI FILM */}
-          <button className="w-[137px] h-[41px] bg-[#df1b1b] text-white text-xl font-normal font-[montserrat] tracking-wide rounded-[10px]">
+          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
             FUJI FILM
           </button>
-
-          {/* PANASONIC */}
-          <button className="w-[137px] h-[41px] bg-[#df1b1b] text-white text-xl font-normal font-[montserrat] tracking-wide rounded-[10px]">
+          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
             PANASONIC
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

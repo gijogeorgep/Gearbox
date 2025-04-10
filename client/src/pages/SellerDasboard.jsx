@@ -1,100 +1,55 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-
-const SellerDasboard = () => {
+import "../components/fonts.css";
+const SellerDashboard = () => {
   return (
-    <>
-      <div className="min-h-screen bg-[#0c0a0b]/40 outline outline-1 outline-white/10 backdrop-blur-sm overflow-hidden">
-        {/* Top Nav */}
-        <Navbar />
+    <div className="bg-[#0C0A0B] min-h-screen ">
+      {/* Top Navbar */}
+      <Navbar />
 
-        <div className="flex gap-6 px-6 py-6">
-          {/* Sidebar */}
-          <div className="w-80 bg-white/10 rounded-2xl border border-white/10 p-4 flex flex-col items-center space-y-4">
-            <img
-              src="https://placehold.co/150x150"
-              alt="Profile"
-              className="w-32 h-32 rounded-full outline outline-[6px] outline-[#3b3939] shadow-lg"
-            />
-            <h2 className="text-white text-2xl font-semibold tracking-wide">
-              PETER PARKOUR
-            </h2>
-            <button className="w-full bg-white text-[#0c0a0b] py-2 rounded-lg text-lg tracking-wide">
+      {/* Main Section: Sidebar + Content */}
+      <div className="flex">
+        {/* Sidebar */}
+        <div className="w-60 bg-white/10 rounded-2xl border border-white/10 backdrop-blur-sm flex flex-col items-center py-6 ml-4 mt-6 mb-6">
+          {/* Profile Image */}
+          <img
+            src="https://placehold.co/150x150"
+            alt="Profile"
+            className="w-32 h-32 rounded-full shadow-md  outline-[6px] outline-[#3b3939]"
+          />
+
+          {/* Username */}
+          <div className="mt-4 text-white text-xl font-semibold font-[montserrat] tracking-wide text-center">
+            PETER PARKOUR
+          </div>
+
+          {/* Sidebar Buttons */}
+          <div className="mt-8 space-y-4 w-full px-4">
+            <button className="w-full h-10 bg-white text-[#0c0a0b] rounded-md border border-white/10 text-base font-light font-[montserrat] tracking-wide">
               PROFILE
             </button>
-            <button className="w-full bg-white/10 text-white py-2 rounded-lg text-lg tracking-wide">
+            <button className="w-full h-10 bg-white/10 text-white rounded-md border border-white/10 text-base font-light font-montserrat tracking-wide">
               SELL ITEMS
             </button>
-            <button className="w-full bg-white/10 text-white py-2 rounded-lg text-lg tracking-wide">
+            <button className="w-full h-10 bg-white/10 text-white rounded-md border border-white/10 text-base font-light font-montserrat tracking-wide">
               MY LIST
             </button>
-            <div className="relative w-full">
-              <button className="w-full bg-white/10 text-white py-2 rounded-lg text-lg tracking-wide">
-                RENTAL REQUESTS
-              </button>
-              <div className="absolute -top-2 right-2 bg-red-600 w-6 h-6 rounded-full flex items-center justify-center text-white font-semibold text-xs">
+            <button className="w-full h-10 bg-white/10 text-white rounded-md border border-white/10 text-base font-light font-montserrat tracking-wide flex items-center justify-between px-3 relative">
+              <span>RENTAL</span>
+              <span className="w-6 h-6 bg-[#df1b1b] text-white text-xs font-semibold rounded-full flex items-center justify-center">
                 1
-              </div>
-            </div>
-          </div>
-
-          {/* Right Section */}
-          <div className="flex-1 bg-white/10 rounded-xl border border-white/10 p-6 relative">
-            {/* Mini Card */}
-            <div className="absolute top-0 right-6 transform -translate-y-1/2 flex items-center space-x-4">
-              <div className="bg-white rounded-lg px-4 py-1 bg-opacity-20">
-                <span className="text-white font-semibold tracking-wide text-base">
-                  SELLER
-                </span>
-              </div>
-              <img
-                src="https://placehold.co/100x100"
-                alt="User Small"
-                className="w-20 h-20 rounded-full outline outline-[4px] outline-[#3b3939] shadow-lg"
-              />
-            </div>
-
-            {/* Profile Info */}
-            <div className="mt-20 flex flex-col gap-4 text-white font-montserrat">
-              <div className="flex justify-between">
-                <span className="font-normal text-base tracking-wide">
-                  NAME
-                </span>
-                <span className="font-semibold text-base tracking-wide">
-                  PETER PARKOUR
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="font-normal text-base tracking-wide">
-                  USERNAME
-                </span>
-                <span className="font-semibold text-base tracking-wide">
-                  peter@gamil.com
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="font-normal text-base tracking-wide">
-                  PHONE
-                </span>
-                <span className="font-semibold text-base tracking-wide">
-                  9778230292
-                </span>
-              </div>
-            </div>
+              </span>
+            </button>
           </div>
         </div>
 
-        {/* Logo */}
-        <div className="absolute top-6 left-6">
-          <img
-            src="https://placehold.co/150x30"
-            alt="Logo"
-            className="w-[150px]"
-          />
+        {/* Main Content */}
+        <div className="flex-1 p-6 text-white">
+          <h1 className="text-2xl font-bold">Dashboard Content</h1>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-export default SellerDasboard;
+export default SellerDashboard;

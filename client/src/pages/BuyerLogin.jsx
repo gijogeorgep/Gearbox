@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import buyerpic from "../assets/buyerform.png";
-import "./buyerlogin.css";
+import "../components/fonts.css";
 import { Link } from "react-router-dom";
 
 const BuyerLogin = () => {
