@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import buyerpic from "../assets/buyerform.png";
 import "../components/fonts.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const BuyerLogin = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/buyer/login",
+        { username, password }
+      );
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("sellerName", response.data.doc.username);
+      console.log(response.data.doc);
+      alert(response.data.msg);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="bg-[#2d2d2d] min-h-screen text-white overflow-hidden">
@@ -21,6 +41,7 @@ const BuyerLogin = () => {
                 USERNAME
               </label>
               <input
+                onChange={(e) => setUsername(e.target.value)}
                 type="text"
                 className="bg-transparent border-b border-white mb-6 py-2 text-white focus:outline-none w-[250px] font-light"
                 placeholder="Enter your username"
@@ -30,12 +51,16 @@ const BuyerLogin = () => {
                 PASSWORD
               </label>
               <input
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 className="bg-transparent border-b border-white mb-6 py-2 text-white focus:outline-none w-[250px] font-light"
                 placeholder="Enter your password"
               />
 
-              <button className="w-[130px] h-[40px] ml-20 mt-4 bg-[#df1b1b] text-white text-sm font-light font-[montserrat] tracking-wide rounded-[10px]">
+              <button
+                onClick={handleSubmit}
+                className="w-[130px] h-[40px] ml-20 mt-4 bg-[#df1b1b] text-white text-sm font-light font-[montserrat] tracking-wide rounded-[10px]"
+              >
                 LOGIN
               </button>
 

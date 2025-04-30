@@ -1,11 +1,14 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import AdminNavbar from "../components/AdminNavbar";
-import { AdminContext } from "../App";
 import gearbox from "../assets/gearbox.png";
 
 const AdminHome = () => {
-  const { admin } = useContext(AdminContext);
-  console.log(admin);
+  const [adminName, setAdminName] = useState("");
+
+  useEffect(() => {
+    const name = localStorage.getItem("adminName");
+    setAdminName(name);
+  }, []);
 
   return (
     <div className="bg-[#0C0A0B] min-h-screen text-white overflow-hidden">
@@ -25,6 +28,11 @@ const AdminHome = () => {
             <p className="hover:text-[#df1b1b] tracking-wider">ADMIN</p>
             <p className="hover:text-[#df1b1b] tracking-wider">HOME</p>
           </div>
+          {adminName && (
+            <p className="text-2xl mt-6 text-white/70 font-normal">
+              ADMIN: <span className="text-white font-semibold uppercase">{adminName}</span>
+            </p>
+          )}
         </div>
       </div>
     </div>

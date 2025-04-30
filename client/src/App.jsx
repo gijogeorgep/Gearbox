@@ -8,11 +8,17 @@ import { createContext } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
-import ProtectedRoute from "./components/protectedRouter";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 import BuyerSignUp from "./pages/BuyerSignUp";
 import SellerLogin from "./pages/SellerLogin";
 import SellerSignUp from "./pages/SellerSignUp";
-import SellerDasboard from "./pages/SellerDasboard";
+import SellerProfile from "./pages/SellerProfile";
+import SellItem from "./pages/SellItem";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminSeller from "./pages/AdminSeller";
+import RentItem from "./pages/RentItem";
+
 export const AdminContext = createContext();
 
 function App() {
@@ -54,17 +60,31 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="admindashboard"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path="/adminseller" element={<AdminSeller />} />
+
             <Route path="buyerlogin" element={<BuyerLogin />} />
             <Route path="buyersignup" element={<BuyerSignUp />} />
+            <Route path="rentitem" element={<RentItem />} />
+
             <Route path="sellerlogin" element={<SellerLogin />} />
+
             <Route path="sellersignup" element={<SellerSignUp />} />
-            <Route path="sellerdashboard" element={<SellerDasboard />} />
+
+            <Route path="sellerprofile" element={<SellerProfile />} />
+
+            <Route path="sellitems" element={<SellItem />} />
           </Routes>
         </BrowserRouter>
       </AdminContext.Provider>
-   
-
-
     </>
   );
 }

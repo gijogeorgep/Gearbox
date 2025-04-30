@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import logo from "../assets/gearboxlogo.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // const navigate= useNavigate()
+  const navigate = useNavigate();
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
@@ -16,10 +16,11 @@ const AdminLogin = () => {
         { username, password }
       );
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("adminName", response.data.doc.username);
 
       console.log(response.data.doc);
       alert(response.data.msg);
-      // navigate("/adminhome")
+      navigate("/adminhome");
     } catch (error) {
       console.log(error);
     }
@@ -75,10 +76,7 @@ const AdminLogin = () => {
                 Login
               </button>
             </div>
-            <div className=" flex justify-center items-center gap-2 ">
-              <p className="font-light text-white">dont have an account ?</p>
-              <Link to="/adminsignup">Sign Up</Link>
-            </div>
+           
           </form>
         </div>
       </div>

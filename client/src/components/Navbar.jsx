@@ -12,7 +12,7 @@ const Navbar = () => {
   return (
     <>
       {/* Navbar */}
-      <div className="relative mt-4">
+      <div className="relative ">
         <div className="flex items-center justify-between px-4 md:px-20 py-2">
           {/* Logo */}
           <img src={logo} alt="logo" className="w-28 md:w-36" />

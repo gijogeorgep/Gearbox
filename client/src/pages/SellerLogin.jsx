@@ -1,11 +1,33 @@
-import React from 'react'
+import React from "react";
 import sellerpic from "../assets/sellerform.jpg";
-import Navbar from '../components/Navbar';
-import { Link } from 'react-router-dom';
+import Navbar from "../components/Navbar";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
 const SellerLogin = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/seller/login",
+        { username, password }
+      );
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("adminName", response.data.doc.username);
+
+      console.log(response.data.doc);
+      alert(response.data.msg);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
-     <div className="bg-[#2d2d2d] min-h-screen text-white overflow-hidden">
+      <div className="bg-[#2d2d2d] min-h-screen text-white overflow-hidden">
         <Navbar />
         <div className="flex justify-center items-center h-[calc(100vh-64px)] px-4">
           <div className="flex flex-col md:flex-row rounded-[13px] border border-white/10 backdrop-blur-[0px] overflow-hidden ">
@@ -19,6 +41,7 @@ const SellerLogin = () => {
                 USERNAME
               </label>
               <input
+                onChange={(e) => setUsername(e.target.value)}
                 type="text"
                 className="bg-transparent border-b border-white mb-6 py-2 text-white focus:outline-none w-[250px] font-light"
                 placeholder="Enter your username"
@@ -28,19 +51,25 @@ const SellerLogin = () => {
                 PASSWORD
               </label>
               <input
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 className="bg-transparent border-b border-white mb-6 py-2 text-white focus:outline-none w-[250px] font-light"
                 placeholder="Enter your password"
               />
 
-              <button className="w-[130px] h-[40px] ml-20 mt-4 bg-[#df1b1b] text-white text-sm font-light font-[montserrat] tracking-wide rounded-[10px]">
+              <button
+                onClick={handlesubmit}
+                className="w-[130px] h-[40px] ml-20 mt-4 bg-[#df1b1b] text-white text-sm font-light font-[montserrat] tracking-wide rounded-[10px]"
+              >
                 LOGIN
               </button>
 
-         
               <div className="mt-6 text-sm font-light font-[montserrat] text-center w-full">
                 <p className="text-white mb-1">Don't have an account ?</p>
-                <Link to="/sellersignup" className="text-[#df1b1b] hover:underline font-medium">
+                <Link
+                  to="/sellersignup"
+                  className="text-[#df1b1b] hover:underline font-medium"
+                >
                   Sign Up
                 </Link>
               </div>
@@ -56,7 +85,7 @@ const SellerLogin = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default SellerLogin
+export default SellerLogin;

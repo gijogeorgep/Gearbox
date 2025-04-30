@@ -1,13 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import "../components/fonts.css";
 import { Link } from "react-router-dom";
 import sellerpic from "../assets/sellerform.jpg";
+import axios from "axios";
 
 const SellerSignUp = () => {
+  const handleSubmit = async (e) => {
+    
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/seller/create",
+        { name, username, email, phone, password, confirmPassword }
+      );
+      console.log(response.data);
+      alert(response.data.msg);
+     
+    } catch (error) {
+      console.log(error);
+    }
+
+   
+
+
+  };
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState();
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   return (
-   <>
-   <div className="bg-[#2d2d2d] min-h-screen text-white overflow-hidden">
+    <>
+      <div className="bg-[#2d2d2d] min-h-screen text-white overflow-hidden">
         <Navbar />
         <div className="flex justify-center items-center min-h-screen px-4 mt-10">
           {/* Main Container */}
@@ -32,9 +59,22 @@ const SellerSignUp = () => {
                     NAME/HUB
                   </label>
                   <input
+                    onChange={(e) => setName(e.target.value)}
                     type="text"
                     placeholder="Enter your name or hub"
                     className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-thin"
+                  />
+                </div>
+
+                <div className="w-full mb-4">
+                  <label className="text-white text-sm mb-1 tracking-wider font-medium font-[montserrat]">
+                    USERNAME
+                  </label>
+                  <input
+                    onChange={(e) => setUsername(e.target.value)}
+                    type="name"
+                    placeholder="Enter your Username"
+                    className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-light"
                   />
                 </div>
 
@@ -44,6 +84,7 @@ const SellerSignUp = () => {
                     EMAIL
                   </label>
                   <input
+                    onChange={(e) => setEmail(e.target.value)}
                     type="email"
                     placeholder="Enter your email"
                     className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-light"
@@ -56,6 +97,7 @@ const SellerSignUp = () => {
                     PHONE
                   </label>
                   <input
+                    onChange={(e) => setPhone(e.target.value)}
                     type="tel"
                     placeholder="Enter your phone number"
                     className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-thin"
@@ -68,6 +110,7 @@ const SellerSignUp = () => {
                     PASSWORD
                   </label>
                   <input
+                    onChange={(e) => setPassword(e.target.value)}
                     type="password"
                     placeholder="Enter password"
                     className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-light"
@@ -80,6 +123,7 @@ const SellerSignUp = () => {
                     CONFIRM PASSWORD
                   </label>
                   <input
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     type="password"
                     placeholder="Confirm password"
                     className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-thin"
@@ -87,7 +131,10 @@ const SellerSignUp = () => {
                 </div>
 
                 {/* Submit Button */}
-                <button className="w-[130px] h-[40px] mt-4 ml-4 bg-[#df1b1b] text-white text-sm font-light font-[montserrat] tracking-wide rounded-[10px] md:ml-35 ">
+                <button
+                  onClick={handleSubmit}
+                  className="w-[130px] h-[40px] mt-4 ml-4 bg-[#df1b1b] text-white text-sm font-light font-[montserrat] tracking-wide rounded-[10px] md:ml-35 "
+                >
                   Submit
                 </button>
               </form>
@@ -106,8 +153,8 @@ const SellerSignUp = () => {
           </div>
         </div>
       </div>
-   </>
-  )
-}
+    </>
+  );
+};
 
-export default SellerSignUp
+export default SellerSignUp;

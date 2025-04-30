@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import "../components/fonts.css";
 import { Link } from "react-router-dom";
 import buyerpic from "../assets/buyerform.png";
+import axios from "axios";
 const BuyerSignUp = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/buyer/create",
+        { name, email, username, phone, password, confirmPassword }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState();
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   return (
     <>
       <div className="bg-[#2d2d2d] min-h-screen text-white overflow-hidden">
@@ -31,9 +51,22 @@ const BuyerSignUp = () => {
                     NAME/HUB
                   </label>
                   <input
+                    onChange={(e) => setName(e.target.value)}
                     type="text"
                     placeholder="Enter your name or hub"
                     className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-thin"
+                  />
+                </div>
+
+                <div className="w-full mb-4">
+                  <label className="text-white text-sm mb-1 tracking-wider font-medium font-[montserrat]">
+                    USERNAME
+                  </label>
+                  <input
+                    onChange={(e) => setUsername(e.target.value)}
+                    type="name"
+                    placeholder="Enter your Username"
+                    className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-light"
                   />
                 </div>
 
@@ -43,6 +76,7 @@ const BuyerSignUp = () => {
                     EMAIL
                   </label>
                   <input
+                    onChange={(e) => setEmail(e.target.value)}
                     type="email"
                     placeholder="Enter your email"
                     className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-light"
@@ -55,6 +89,7 @@ const BuyerSignUp = () => {
                     PHONE
                   </label>
                   <input
+                    onChange={(e) => setPhone(e.target.value)}
                     type="tel"
                     placeholder="Enter your phone number"
                     className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-thin"
@@ -67,6 +102,7 @@ const BuyerSignUp = () => {
                     PASSWORD
                   </label>
                   <input
+                    onChange={(e) => setPassword(e.target.value)}
                     type="password"
                     placeholder="Enter password"
                     className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-light"
@@ -79,6 +115,7 @@ const BuyerSignUp = () => {
                     CONFIRM PASSWORD
                   </label>
                   <input
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     type="password"
                     placeholder="Confirm password"
                     className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-thin"
@@ -86,7 +123,10 @@ const BuyerSignUp = () => {
                 </div>
 
                 {/* Submit Button */}
-                <button className="w-[130px] h-[40px] mt-4 ml-4 bg-[#df1b1b] text-white text-sm font-light font-[montserrat] tracking-wide rounded-[10px] md:ml-35 ">
+                <button
+                  onClick={handleSubmit}
+                  className="w-[130px] h-[40px] mt-4 ml-4 bg-[#df1b1b] text-white text-sm font-light font-[montserrat] tracking-wide rounded-[10px] md:ml-35 "
+                >
                   Submit
                 </button>
               </form>
