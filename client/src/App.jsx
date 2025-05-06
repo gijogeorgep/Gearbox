@@ -9,6 +9,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { sellerProtectRoute } from "./components/ProtectedRoute";
 
 import BuyerSignUp from "./pages/BuyerSignUp";
 import SellerLogin from "./pages/SellerLogin";
@@ -18,6 +19,8 @@ import SellItem from "./pages/SellItem";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminSeller from "./pages/AdminSeller";
 import RentItem from "./pages/RentItem";
+import MyList from "./pages/MyList";
+import RentalRequest from "./pages/RentalRequest";
 
 export const AdminContext = createContext();
 
@@ -73,15 +76,24 @@ function App() {
 
             <Route path="buyerlogin" element={<BuyerLogin />} />
             <Route path="buyersignup" element={<BuyerSignUp />} />
-            <Route path="rentitem" element={<RentItem />} />
+            <Route path="rentitem/:id" element={<RentItem />} />
 
             <Route path="sellerlogin" element={<SellerLogin />} />
-
             <Route path="sellersignup" element={<SellerSignUp />} />
 
-            <Route path="sellerprofile" element={<SellerProfile />} />
+            <Route
+              path="sellerprofile"
+              element={
+                <sellerProtectRoute>
+                  <SellerProfile />
+                </sellerProtectRoute>
+              }
+            />
 
             <Route path="sellitems" element={<SellItem />} />
+
+            <Route path="mylist" element={<MyList />} />
+            <Route path="rentalrequest" element={<RentalRequest />} />
           </Routes>
         </BrowserRouter>
       </AdminContext.Provider>

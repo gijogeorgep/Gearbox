@@ -8,6 +8,7 @@ const AdminHome = () => {
   useEffect(() => {
     const name = localStorage.getItem("adminName");
     setAdminName(name);
+    console.log(name);
   }, []);
 
   return (
@@ -30,7 +31,10 @@ const AdminHome = () => {
           </div>
           {adminName && (
             <p className="text-2xl mt-6 text-white/70 font-normal">
-              ADMIN: <span className="text-white font-semibold uppercase">{adminName}</span>
+              ADMIN:{" "}
+              <span className="text-white font-semibold uppercase">
+                {adminName}
+              </span>
             </p>
           )}
         </div>

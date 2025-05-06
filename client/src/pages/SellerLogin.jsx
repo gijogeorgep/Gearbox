@@ -4,7 +4,10 @@ import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const SellerLogin = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,10 +19,18 @@ const SellerLogin = () => {
         { username, password }
       );
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("adminName", response.data.doc.username);
 
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: response.data.doc.name,
+          username: response.data.doc.username,
+          role: "seller", // or "seller", or "buyer"
+        })
+      );
       console.log(response.data.doc);
       alert(response.data.msg);
+      navigate("/sellerprofile");
     } catch (error) {
       console.log(error);
     }

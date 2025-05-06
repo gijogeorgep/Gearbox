@@ -17,7 +17,15 @@ const BuyerLogin = () => {
         { username, password }
       );
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("sellerName", response.data.doc.username);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: response.data.doc.name,
+          username: response.data.doc.username,
+          role: "buyer", // or "seller", or "buyer"
+        })
+      );
+
       console.log(response.data.doc);
       alert(response.data.msg);
     } catch (error) {

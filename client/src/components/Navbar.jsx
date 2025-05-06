@@ -3,16 +3,27 @@ import profile from "../assets/profile_icon.png";
 import notification from "../assets/notification_icon.png";
 import logo from "../assets/gearboxlogo.png";
 import down from "../assets/down_icon.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate(); // Added for navigation
+
+  // Profile click handler
+  const handleProfileClick = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/sellerprofile");
+    } else {
+      navigate("/sellerlogin");
+    }
+  };
 
   return (
     <>
       {/* Navbar */}
-      <div className="relative ">
+      <div className="relative">
         <div className="flex items-center justify-between px-4 md:px-20 py-2">
           {/* Logo */}
           <img src={logo} alt="logo" className="w-28 md:w-36" />
@@ -46,7 +57,13 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-            <img src={profile} alt="profile icon" className="w-7" />
+            {/* Profile and Notification Icons */}
+            <img
+              src={profile}
+              alt="profile icon"
+              className="w-7 cursor-pointer"
+              onClick={handleProfileClick}
+            />
             <img src={notification} alt="notification icon" className="w-7" />
           </div>
 
@@ -90,7 +107,15 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="flex gap-4 mt-4">
-                <img src={profile} alt="profile" className="w-6" />
+                <img
+                  src={profile}
+                  alt="profile"
+                  className="w-6 cursor-pointer"
+                  onClick={() => {
+                    handleProfileClick();
+                    setIsMobileMenuOpen(false);
+                  }}
+                />
                 <img src={notification} alt="notification" className="w-6" />
               </div>
             </nav>

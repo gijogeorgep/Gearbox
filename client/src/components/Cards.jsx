@@ -1,7 +1,21 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./fonts.css";
 
 const Cards = ({ product }) => {
+  const navigate = useNavigate();
+
+  const handleRentClick = () => {
+    // Log product _id for debugging
+    console.log("Navigating with product _id:", product._id);
+    if (!product._id) {
+      console.error("Product _id is undefined:", product);
+      return;
+    }
+    // Navigate to RentItem page with product _id
+    navigate(`/rentitem/${product._id}`, { state: { product } });
+  };
+
   return (
     <div className="w-full max-w-[278px] h-auto relative rounded-2xl bg-gradient-to-b from-[#1c1c1c] to-[#4f4a4a] p-5 mx-auto shadow-inner shadow-[#00000040] flex flex-col justify-between">
       {/* Location */}
@@ -13,7 +27,7 @@ const Cards = ({ product }) => {
           alt="marker"
         />
         <div className="text-white text-xs sm:text-sm font-light font-[montserrat] tracking-wide">
-          {product.location}
+          {product.location || "Unknown Location"}
         </div>
       </div>
 
@@ -23,14 +37,14 @@ const Cards = ({ product }) => {
           src={
             product.imageUrl ||
             "https://via.placeholder.com/278x130?text=No+Image"
-          } // Fallback image
+          }
           alt={product.name}
           className="w-full h-full object-cover object-center"
-          loading="lazy" // Lazy load for performance
+          loading="lazy"
           onError={(e) =>
             (e.target.src =
               "https://via.placeholder.com/278x130?text=Image+Error")
-          } // Handle broken images
+          }
         />
       </div>
 
@@ -62,7 +76,10 @@ const Cards = ({ product }) => {
           </div>
         </div>
 
-        <button className="bg-[#df1b1b] rounded-lg px-4 py-1 shadow-md shadow-[#df1b1b70] hover:bg-[#b91515] transition-colors">
+        <button
+          onClick={handleRentClick}
+          className="bg-[#df1b1b] rounded-lg px-4 py-1 shadow-md shadow-[#df1b1b70] hover:bg-[#b91515] transition-colors"
+        >
           <span className="text-white text-sm font-medium font-[montserrat] tracking-wide">
             RENT
           </span>

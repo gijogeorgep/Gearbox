@@ -107,8 +107,14 @@ const SellItem = () => {
         cautionDeposit,
         tutorialLink,
       };
+      const token = localStorage.getItem("token"); // replace with your token key
 
-      await axios.post("http://localhost:4000/api/product/create", formData);
+      await axios.post("http://localhost:4000/api/product/create", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       alert("Item uploaded successfully!");
     } catch (error) {
       console.error("Submit error:", error);
@@ -397,8 +403,13 @@ const SellItem = () => {
               {/* Tutorial Link */}
               <div className="mb-6">
                 <label>Tutorial Link</label>
+                <p className="text-sm text-gray-400 mt-1">
+                  Find the 11-character code in the YouTube URL (e.g.,
+                  `m6dZh8GHM2M` in `https://youtu.be/m6dZh8GHM2M` or
+                  `https://www.youtube.com/watch?v=m6dZh8GHM2M`)
+                </p>
                 <input
-                  placeholder="Optional user guide link"
+                  placeholder="m6dZh8GHM2M"
                   type="text"
                   value={tutorialLink}
                   onChange={(e) => setTutorialLink(e.target.value)}
