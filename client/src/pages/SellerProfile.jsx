@@ -21,13 +21,18 @@ const SellerProfile = () => {
     const fetchSellerProfile = async () => {
       try {
         const token = localStorage.getItem("token"); // or sellerToken
+        if (!token) {
+          navigate("/sellerlogin");
+        }
         console.log("Token:", token);
+
         const response = await axios.get(
           "http://localhost:4000/api/seller/sellerprofile",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
+
         setSellerData(response.data);
       } catch (err) {
         console.error("Error fetching seller profile", err);

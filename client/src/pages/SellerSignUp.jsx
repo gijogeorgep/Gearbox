@@ -7,7 +7,6 @@ import axios from "axios";
 
 const SellerSignUp = () => {
   const handleSubmit = async (e) => {
-    
     e.preventDefault();
     try {
       const response = await axios.post(
@@ -16,14 +15,9 @@ const SellerSignUp = () => {
       );
       console.log(response.data);
       alert(response.data.msg);
-     
     } catch (error) {
       console.log(error);
     }
-
-   
-
-
   };
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");

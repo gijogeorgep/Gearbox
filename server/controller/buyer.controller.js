@@ -1,29 +1,33 @@
-const { Admin } = require("../models/admin.model");
+const { Buyer } = require("../models/buyer.Model");
 const bcrypt = require("bcrypt");
-const e = require("express");
 const jwt = require("jsonwebtoken");
-
-const adminSignUp = async (req, res) => {
+const e = require("express");
+async function name(params) {
+  
+}
+const buyerSignUp = async (req, res) => {
   try {
     const { name, username, email, password, confirmPassword } = req.body;
-    const doc = await Admin.findOne({ email });
+    const doc = await Buyer.findOne({ email });
     if (doc) {
       return res.status(400).json({ msg: "user already exist", doc });
     }
 
     if (password !== confirmPassword) {
-      return res.status(400).json({ msg: "Passwords do not match" });
+      return res.status(400).json({ msg: "password don not match" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newAdmin = await Admin.create({
+    const newBuyer = await Buyer.create({
       name,
       username,
       email,
       password: hashedPassword,
       confirmPassword: hashedPassword,
     });
-    return res.status(201).json({ msg: "Admin created succesfuly", newAdmin });
+    return res
+      .status(201)
+      .json({ msg: "account created successfully", newBuyer });
   } catch (error) {
     console.log(error);
   }
@@ -32,7 +36,7 @@ const adminSignUp = async (req, res) => {
 const loginWithPassword = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const doc = await Admin.findOne({ username });
+    const doc = await Buyer.findOne({ username });
     if (!doc) {
       return res.status(400).json({ msg: "account not found" });
     }
@@ -49,13 +53,14 @@ const loginWithPassword = async (req, res) => {
   }
 };
 
-const getProfileFromToken = async (req, res) => {
+const getBuyerCount = async (req, res) => {
   try {
+    const count = await Buyer.countDocuments();
+    return res.status(200).json({ count });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "internal server error" });
   }
 };
 
-module.exports = { adminSignUp, loginWithPassword, getProfileFromToken };
-
+module.exports = { buyerSignUp, loginWithPassword ,getBuyerCount};

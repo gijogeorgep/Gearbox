@@ -5,6 +5,7 @@ const adminSchema = new mongoose.Schema({
   username: String,
   password: String,
   confirmpassword: String,
+  role: { type: String, enum: ["admin"], default: "admin" },
 });
 
 const Admin = mongoose.model("Admin", adminSchema);
