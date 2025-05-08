@@ -4,25 +4,101 @@ import "../components/fonts.css";
 import { Link } from "react-router-dom";
 import buyerpic from "../assets/buyerform.png";
 import axios from "axios";
+
 const BuyerSignUp = () => {
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/api/buyer/create",
-        { name, email, username, phone, password, confirmPassword }
-      );
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState();
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [otp, setopt] = useState("");
+  const [otpstep, setOtpStep] = useState(false);
+  const [emailverifed, setEmailVerified] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(emailverifed);
+
+    if (emailverifed == false) {
+      alert("Please verify your email before submitting.");
+      return;
+    } else {
+      console.log("correct");
+    }
+
+    // Step 1: Send account creation request to backend
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/buyer/create",
+        {
+          name,
+          username,
+          email,
+          phone,
+          password,
+          confirmPassword,
+        }
+      );
+      return response.data;
+      // if (response.data.msg === "account created succesfuly") {
+      //   alert("Account created successfully!");
+      //   // Redirect or perform further actions
+      // }
+    } catch (error) {
+      console.log(error);
+      alert("Error creating account. Please try again.");
+    }
+  };
+
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    console.log("C");
+
+    // Make the Axios request to verify the OTP
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/buyer/verify-otp", // Adjust this to match your server's endpoint
+        {
+          email: email, // The email you are verifying
+          otp: otp, // The OTP entered by the user
+        }
+      );
+      console.log("D");
+
+      if (response.data) {
+        // If the OTP is verified successfully, set emailVerified to true
+        setEmailVerified(true);
+        alert("Email verified successfully!");
+      } else {
+        // Handle other messages, if any
+        alert("the otp verification failed");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Error verifying OTP. Please try again.");
+    }
+  };
+
+  const handleVerifyEmail = async () => {
+    try {
+      console.log("A");
+
+      // Send OTP to the user's email
+      await axios.post("http://localhost:4000/api/buyer/sent-otp", {
+        name,
+        username,
+        email,
+      });
+      console.log("B");
+
+      setOtpStep(true); // Show OTP input field
+      alert("OTP sent to your email. Please enter the OTP to verify.");
+    } catch (error) {
+      console.log(error);
+      alert("Error sending OTP. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -82,6 +158,39 @@ const BuyerSignUp = () => {
                     className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-light"
                   />
                 </div>
+
+                <div className="w-full mb-4">
+                  <button
+                    type="button"
+                    onClick={handleVerifyEmail}
+                    className="w-full py-2 bg-[#df1b1b] text-white font-medium rounded-md"
+                  >
+                    Verify Email
+                  </button>
+                </div>
+
+                {otpstep && (
+                  <div className="w-full mb-4">
+                    <label className="text-white text-sm mb-1 tracking-wider font-medium font-[montserrat]">
+                      Enter OTP
+                    </label>
+                    <input
+                      onChange={(e) => setopt(e.target.value)}
+                      type="text"
+                      placeholder="Enter OTP sent to your email"
+                      className="bg-transparent border-b border-white py-2 text-white focus:outline-none w-full font-light"
+                    />
+                  </div>
+                )}
+
+                {otpstep && (
+                  <button
+                    onClick={handleOtpSubmit} // Trigger OTP verification
+                    className="w-full py-2 bg-[#df1b1b] text-white font-medium rounded-md"
+                  >
+                    Verify OTP
+                  </button>
+                )}
 
                 {/* Phone */}
                 <div className="w-full mb-4">

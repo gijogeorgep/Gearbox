@@ -1,35 +1,132 @@
 const { Buyer } = require("../models/buyer.Model");
 const bcrypt = require("bcrypt");
+const { OtpVerification } = require("../models/otpModel");
 const jwt = require("jsonwebtoken");
 const e = require("express");
-async function name(params) {
-  
-}
-const buyerSignUp = async (req, res) => {
+const nodemailer = require("nodemailer");
+async function name(params) {}
+
+const sendOtp = async (req, res) => {
   try {
-    const { name, username, email, password, confirmPassword } = req.body;
-    const doc = await Buyer.findOne({ email });
-    if (doc) {
-      return res.status(400).json({ msg: "user already exist", doc });
+    console.log("A");
+
+    const { name, username, email } = req.body;
+    // Check if the email already exists in the Seller collection
+    const existingBuyer = await Buyer.findOne({ email });
+
+    if (existingBuyer) {
+      return res.status(400).json({ msg: "Email already registered." });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Verify your email - Camera Rental App",
+      text: `Your OTP code is: ${otp}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    // Save OTP record to the database
+    await OtpVerification.create({
+      name,
+      username,
+      email,
+      otp,
+    });
+
+    console.log(otp);
+
+    return res.status(200).json({ msg: "OTP sent successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Server error" });
+  }
+};
+
+const verifyOtp = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    // Find the OTP record in the database
+    const otpRecord = await OtpVerification.findOne({ email: email, otp: otp });
+    if (!otpRecord) {
+      return res.status(400).json({ msg: "Invalid OTP" });
+    }
+
+    // Check if the email is already registered as a seller
+    const existingBuyer = await Buyer.findOne({ email: email });
+    if (existingBuyer) {
+      return res
+        .status(400)
+        .json({ msg: "Email already registered as a seller" });
+    }
+
+    const { name, username, phone, password } = otpRecord;
+
+    // Delete OTP record after successful account creation
+    await OtpVerification.deleteOne({ _id: otpRecord._id });
+
+    return res.status(201).json({ msg: "Email verified " });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Server error" });
+  }
+};
+
+const createBuyer = async (req, res) => {
+  try {
+    const { name, username, email, phone, password, confirmPassword } =
+      req.body;
+
+    if (
+      !name ||
+      !username ||
+      !email ||
+      !phone ||
+      !password ||
+      !confirmPassword
+    ) {
+      return res.status(400).json({ msg: "All fields are required" });
+    }
+
+    const existingBuyer = await Buyer.findOne({ email });
+    if (existingBuyer) {
+      return res.status(400).json({ msg: "User already exists" });
     }
 
     if (password !== confirmPassword) {
-      return res.status(400).json({ msg: "password don not match" });
+      return res.status(401).json({ msg: "Passwords do not match" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const newBuyer = await Buyer.create({
       name,
       username,
       email,
+      phone,
       password: hashedPassword,
-      confirmPassword: hashedPassword,
+      confirmpassword: hashedPassword,
     });
+
+    console.log(newBuyer);
     return res
-      .status(201)
-      .json({ msg: "account created successfully", newBuyer });
+      .status(200)
+      .json({ msg: "Account created successfully", Buyer: newBuyer });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ msg: "Server error" });
   }
 };
 
@@ -63,4 +160,10 @@ const getBuyerCount = async (req, res) => {
   }
 };
 
-module.exports = { buyerSignUp, loginWithPassword ,getBuyerCount};
+module.exports = {
+  sendOtp,
+  verifyOtp,
+  createBuyer,
+  loginWithPassword,
+  getBuyerCount,
+};

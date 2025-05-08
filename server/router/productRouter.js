@@ -11,8 +11,8 @@ const { authenticateSeller } = require("../middleware/auth");
 const ProductRouter = express.Router();
 
 ProductRouter.post("/create", authenticateSeller, UploadProduct);
-
 ProductRouter.get("/all", getAllProduct);
+ProductRouter.get("/seller/products", authenticateSeller, getSellerProducts);
 ProductRouter.get("/:id", getProductById);
 
 module.exports = { ProductRouter };

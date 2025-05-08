@@ -79,6 +79,8 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+
+  email: { type: String },
 });
 
 const Product = mongoose.model("Product", productSchema);

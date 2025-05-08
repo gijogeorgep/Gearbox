@@ -2,7 +2,7 @@ const { Product } = require("../models/product.model");
 
 const UploadProduct = async (req, res) => {
   try {
-    const {
+    const item = ({
       itemType,
       name,
       brand,
@@ -14,7 +14,10 @@ const UploadProduct = async (req, res) => {
       rate,
       cautionDeposit,
       tutorialLink,
-    } = req.body;
+      sellerId: req.seller._id,
+    } = req.body);
+
+    console.log(item);
 
     const newProduct = await Product.create({
       itemType,
@@ -28,7 +31,8 @@ const UploadProduct = async (req, res) => {
       rate,
       cautionDeposit,
       tutorialLink,
-      sellerId: req.Seller._id, // Corrected here to `req.Seller._id`
+      sellerEmail: req.seller.email,
+      sellerId: req.seller._id,
     });
 
     res
@@ -71,13 +75,13 @@ const getProductById = async (req, res) => {
 
 const getSellerProducts = async (req, res) => {
   try {
-    const { sellerId } = req.seller._id;
+    const id = req.seller._id;
+    const products = await Product.find({ sellerId: id }); 
 
-    const products = await Product.find({ sellerId });
-    res.status(200).json(products);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: "Something went wrong" });
+    return res.json(products);
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+    res.status(500).json({ msg: "Server error" });
   }
 };
 

@@ -4,13 +4,16 @@ import AdminSignUp from "./pages/AdminSignUp";
 import AdminHome from "./pages/AdminHome";
 import BuyerLogin from "./pages/BuyerLogin";
 import Homepage from "./pages/Homepage";
-import { createContext } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { sellerProtectRoute } from "./components/ProtectedRoute";
+import { SellerProtectRoute } from "./components/ProtectedRoute";
 
+import UserContext from "./context/UserContext";
+import Admincontext from "./context/AdminContext";
+
+import { UserProvider } from "./context/UserContext";
 import BuyerSignUp from "./pages/BuyerSignUp";
 import SellerLogin from "./pages/SellerLogin";
 import SellerSignUp from "./pages/SellerSignUp";
@@ -21,12 +24,13 @@ import AdminSeller from "./pages/AdminSeller";
 import RentItem from "./pages/RentItem";
 import MyList from "./pages/MyList";
 import RentalRequest from "./pages/RentalRequest";
-
-export const AdminContext = createContext();
+import UpdateItem from "./pages/UpdateItem";
 
 function App() {
   const [admin, setAdmin] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  // const [buyer, setBuyer] = useState(null);
+  // const [seller, setSeller] = useState(null);
 
   const fetchAdmin = async () => {
     try {
@@ -42,61 +46,91 @@ function App() {
       setIsLoading(false);
     }
   };
+
+  // const fetchSeller = async () => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+
+  //   try {
+  //     const response = await axios.get("http://localhost:4000/api/seller", {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     setSeller(response.data.seller);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   useEffect(() => {
     fetchAdmin();
+    // fetchSeller();
   }, []);
 
   return (
     <>
-      <AdminContext.Provider value={{ admin, setAdmin, isLoading }}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/adminlogin" element={<AdminLogin />} />
-            <Route path="adminsignup" element={<AdminSignUp />} />
+      {/* <UserContext.Provider value={{ buyer, setBuyer, seller, setSeller }}> */}
+      <UserProvider>
+        <Admincontext.Provider value={{ admin, setAdmin, isLoading }}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Homepage />} />
+              <Route path="/adminlogin" element={<AdminLogin />} />
+              <Route path="adminsignup" element={<AdminSignUp />} />
 
-            <Route
-              path="adminhome"
-              element={
-                <ProtectedRoute>
-                  <AdminHome />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="admindashboard"
-              element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
+              <Route
+                path="adminhome"
+                element={
+                  <ProtectedRoute>
+                    <AdminHome />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="admindashboard"
+                element={
+                  <ProtectedRoute>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
 
-            <Route path="/adminseller" element={<AdminSeller />} />
+              <Route path="/adminseller" element={<AdminSeller />} />
 
-            <Route path="buyerlogin" element={<BuyerLogin />} />
-            <Route path="buyersignup" element={<BuyerSignUp />} />
-            <Route path="rentitem/:id" element={<RentItem />} />
+              <Route path="buyerlogin" element={<BuyerLogin />} />
+              <Route path="buyersignup" element={<BuyerSignUp />} />
+              <Route path="rentitem/:id" element={<RentItem />} />
 
-            <Route path="sellerlogin" element={<SellerLogin />} />
-            <Route path="sellersignup" element={<SellerSignUp />} />
+              <Route path="sellerlogin" element={<SellerLogin />} />
+              <Route path="sellersignup" element={<SellerSignUp />} />
 
-            <Route
-              path="sellerprofile"
-              element={
-                <sellerProtectRoute>
-                  <SellerProfile />
-                </sellerProtectRoute>
-              }
-            />
+              <Route
+                path="sellerprofile"
+                element={
+                  <SellerProtectRoute>
+                    <SellerProfile />
+                  </SellerProtectRoute>
+                }
+              />
 
-            <Route path="sellitems" element={<SellItem />} />
+              <Route
+                path="sellitems"
+                element={
+                  <SellerProtectRoute>
+                    <SellItem />
+                  </SellerProtectRoute>
+                }
+              />
 
-            <Route path="mylist" element={<MyList />} />
-            <Route path="rentalrequest" element={<RentalRequest />} />
-          </Routes>
-        </BrowserRouter>
-      </AdminContext.Provider>
+              <Route path="updateitem" element={<UpdateItem />} />
+
+              <Route path="mylist" element={<MyList />} />
+              <Route path="rentalrequest" element={<RentalRequest />} />
+            </Routes>
+          </BrowserRouter>
+        </Admincontext.Provider>
+      </UserProvider>
+
+      {/* </UserContext.Provider> */}
     </>
   );
 }
