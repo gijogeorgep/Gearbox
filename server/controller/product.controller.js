@@ -14,7 +14,7 @@ const UploadProduct = async (req, res) => {
       rate,
       cautionDeposit,
       tutorialLink,
-      sellerId: req.seller._id,
+      email,
     } = req.body);
 
     console.log(item);
@@ -31,8 +31,7 @@ const UploadProduct = async (req, res) => {
       rate,
       cautionDeposit,
       tutorialLink,
-      sellerEmail: req.seller.email,
-      sellerId: req.seller._id,
+      email,
     });
 
     res
@@ -75,10 +74,12 @@ const getProductById = async (req, res) => {
 
 const getSellerProducts = async (req, res) => {
   try {
-    const id = req.seller._id;
-    const products = await Product.find({ sellerId: id }); 
+    const email = req.seller.email;
+    console.log("email is :"+email);
 
-    return res.json(products);
+    const products = await Product.find({ email:email });
+    console.log(products);
+    return res.json({ products });
   } catch (error) {
     console.error("Failed to fetch products:", error);
     res.status(500).json({ msg: "Server error" });

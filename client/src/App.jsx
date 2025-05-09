@@ -25,6 +25,8 @@ import RentItem from "./pages/RentItem";
 import MyList from "./pages/MyList";
 import RentalRequest from "./pages/RentalRequest";
 import UpdateItem from "./pages/UpdateItem";
+import BuyerProfile from "./pages/BuyerProfile";
+import MyBooking from "./pages/MyBooking";
 
 function App() {
   const [admin, setAdmin] = useState(null);
@@ -99,6 +101,8 @@ function App() {
               <Route path="buyerlogin" element={<BuyerLogin />} />
               <Route path="buyersignup" element={<BuyerSignUp />} />
               <Route path="rentitem/:id" element={<RentItem />} />
+              <Route path="/buyerprofile" element={<BuyerProfile />} />
+              <Route path="/mybooking" element={<MyBooking />} />
 
               <Route path="sellerlogin" element={<SellerLogin />} />
               <Route path="sellersignup" element={<SellerSignUp />} />

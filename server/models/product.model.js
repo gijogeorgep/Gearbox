@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
+  email: {
+    type: String,
+  },
+
   itemType: {
     type: String,
     required: true,
@@ -69,18 +73,16 @@ const productSchema = new mongoose.Schema({
     default: null,
   },
 
-  sellerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Seller",
-    required: true,
-  },
+  // sellerId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "Seller",
+  //   required: true,
+  // },
 
   createdAt: {
     type: Date,
     default: Date.now,
   },
-
-  email: { type: String },
 });
 
 const Product = mongoose.model("Product", productSchema);

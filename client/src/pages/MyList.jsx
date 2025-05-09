@@ -6,13 +6,17 @@ import SellerDasboardSidebar from "../components/SellerDasboardSidebar";
 const MyList = () => {
   const [products, setProducts] = useState([]);
 
+
   useEffect(() => {
     const fetchSellerProducts = async () => {
       try {
         const token = localStorage.getItem("token");
 
+        console.log("Token:", token);
+      
+
         const res = await axios.get(
-          "http://localhost:4000/api/product/seller/products",
+          `http://localhost:4000/api/product/seller/products`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -22,10 +26,9 @@ const MyList = () => {
         );
 
         console.log("Fetched data:", res.data);
-        setProducts(res.data); // ✅ Fix: update the state with fetched data
+        setProducts(res.data.products);
       } catch (error) {
         console.error("Error fetching seller products:", error);
-        setProducts([]);
       }
     };
 

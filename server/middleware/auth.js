@@ -31,6 +31,7 @@ const authenticateSeller = async (req, res, next) => {
     if (!authHeader) {
       return res.status(401).json({ msg: "Unauthorized: No token provided" });
     }
+    console.log(authHeader);
 
     const sellertoken = authHeader.split(" ")[1];
 
@@ -62,7 +63,7 @@ const authenticateBuyer = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      return res.staus(401).json({ msg: "unauthorized" });
+      return res.status(401).json({ msg: "unauthorized" });
     }
     const token = authHeader.split(" ")[1];
     jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
@@ -70,7 +71,7 @@ const authenticateBuyer = async (req, res, next) => {
         return res.status(400).json({ msg: "invalid token" });
       }
       const doc = await Buyer.findById(decodedToken.id);
-      req.Buyer = doc;
+      req.buyer = doc;
       next();
     });
   } catch (error) {

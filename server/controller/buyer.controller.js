@@ -160,10 +160,31 @@ const getBuyerCount = async (req, res) => {
   }
 };
 
+const BuyerProfile = async (req, res) => {
+  try {
+    if (!req.buyer) {
+      return res.status(401).json({ msg: "unauthorized" });
+    }
+
+    console.log(req.buyer);
+    
+    const buyer = await Buyer.findById(req.buyer._id);
+    if (!buyer) {
+      return res.status(404).json({ msg: "buyer not found" });
+    }
+
+    return res.status(200).json({ msg: "buyer profile successul", buyer });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "internal server error" });
+  }
+};
+
 module.exports = {
   sendOtp,
   verifyOtp,
   createBuyer,
   loginWithPassword,
   getBuyerCount,
+  BuyerProfile,
 };

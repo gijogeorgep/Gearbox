@@ -9,6 +9,7 @@ const SellItem = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [smallImage1, setSmallImage1] = useState(null);
   const [smallImage2, setSmallImage2] = useState(null);
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
@@ -20,7 +21,7 @@ const SellItem = () => {
   const [uploadingMainImage, setUploadingMainImage] = useState(false);
   const [uploadingSmall1, setUploadingSmall1] = useState(false);
   const [uploadingSmall2, setUploadingSmall2] = useState(false);
-
+  const [sellerData, setSellerData] = useState();
   const uploadImageToCloudinary = async (file) => {
     const data = new FormData();
     data.append("file", file);
@@ -92,7 +93,18 @@ const SellItem = () => {
 
     setIsUploading(true);
     try {
+      const token = localStorage.getItem("token");
+      console.log("Token:", token);
+      const response = await axios.get(
+        "http://localhost:4000/api/seller/sellerprofile",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setSellerData(response.data);
+
       const formData = {
+        email: sellerData.email,
         itemType: selectedItem,
         brand,
         name,
@@ -107,7 +119,7 @@ const SellItem = () => {
         cautionDeposit,
         tutorialLink,
       };
-      const token = localStorage.getItem("token"); // replace with your token key
+      // const token = localStorage.getItem("token"); // replace with your token key
 
       await axios.post("http://localhost:4000/api/product/create", formData, {
         headers: {

@@ -42,9 +42,7 @@ const SellerDasboardSidebar = () => {
       </div>
 
       <div className="mt-6  flex flex-col gap-5 w-full px-4">
-        {/* 
        
-         */}
 
         <Link to="/sellerprofile">
           <button className={btnStyle(isActive("/sellerprofile"))}>

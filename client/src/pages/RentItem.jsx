@@ -19,6 +19,35 @@ const RentItem = () => {
   const [locationInput, setLocationInput] = useState("");
   const [pincode, setPincode] = useState("");
   const [address, setAddress] = useState("");
+  const [products, setProducts] = useState([]);
+
+  const fetchSellerProducts = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      console.log("Token:", token);
+
+      const res = await axios.get(
+        `http://localhost:4000/api/product/seller/products`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Cache-Control": "no-cache",
+          },
+        }
+      );
+
+      console.log("Fetched data:", res.data);
+      setProducts(res.data.products);
+      products;
+    } catch (error) {
+      console.error("Error fetching seller products:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSellerProducts();
+  }, []);
 
   // Fetch product by ID
   useEffect(() => {
@@ -187,7 +216,7 @@ const RentItem = () => {
               alt="seller"
             />
             <div className="absolute left-1/2 transform -translate-x-1/2 top-[94.60px] text-white text-[19.02px] font-semibold font-['Montserrat'] tracking-wide text-center">
-              {product?.sellerName || "PETER PARKOUR"}
+              {product?.email}
             </div>
             <div className="w-[32.07px] h-[31.33px] absolute left-1/2 transform -translate-x-1/2 top-[117.59px] bg-[#d9d9d9]/10 rounded-full">
               <img
@@ -317,7 +346,7 @@ const RentItem = () => {
                       className="text-[11px] font-light text-gray-200 tracking-wide line-clamp-1"
                       title={product?.sellerName}
                     >
-                      {product?.sellerName || "Peter Parkour"}
+                      {products?.sellername}
                     </p>
                   </div>
                   <div className="space-y-1.5 px-1.5">

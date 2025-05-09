@@ -32,8 +32,8 @@ const SellerProfile = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
         setSellerData(response.data);
+        console.log(sellerData);
       } catch (err) {
         console.error("Error fetching seller profile", err);
       }

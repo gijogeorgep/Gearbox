@@ -5,7 +5,7 @@ import gearbox from "../assets/gearbox.png";
 const Tagline = () => {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-12 text-white font-[Montserrat] text-center mt-4 overflow-hidden">
-      {/* Gearbox Image - centered and clearly visible */}
+      {/* Gearbox Image - centered and clearly visible */} 
       <div className="flex justify-center mb-6">
         <img
           className="w-[100px] sm:w-[120px] md:w-[140px] lg:w-[160px] xl:w-[180px]"
