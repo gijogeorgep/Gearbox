@@ -179,6 +179,16 @@ const sellerProfile = async (req, res) => {
   }
 };
 
+const getAllSellers = async (req, res) => {
+  try {
+    const sellers = await Seller.find({});
+    res.status(200).json({ sellers });
+  } catch (error) {
+    console.error("Error fetching sellers:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   sendOtp,
   verifyOtp,
@@ -186,4 +196,5 @@ module.exports = {
   loginWithPassword,
   getSellerCount,
   sellerProfile,
+  getAllSellers,
 };

@@ -15,6 +15,7 @@ const UploadProduct = async (req, res) => {
       cautionDeposit,
       tutorialLink,
       email,
+      sellername,
     } = req.body);
 
     console.log(item);
@@ -32,6 +33,7 @@ const UploadProduct = async (req, res) => {
       cautionDeposit,
       tutorialLink,
       email,
+      sellername,
     });
 
     res
@@ -75,14 +77,87 @@ const getProductById = async (req, res) => {
 const getSellerProducts = async (req, res) => {
   try {
     const email = req.seller.email;
-    console.log("email is :"+email);
+    const sellername = req.seller.name;
+    console.log("email is :" + email);
 
-    const products = await Product.find({ email:email });
+    const products = await Product.find({ email: email });
+    const nameofSeller = await Product.find({ sellername: sellername });
     console.log(products);
+    console.log(nameofSeller);
+
     return res.json({ products });
   } catch (error) {
     console.error("Failed to fetch products:", error);
     res.status(500).json({ msg: "Server error" });
+  }
+};
+
+const getProductsCount = async (req, res) => {
+  try {
+    const count = await Product.countDocuments();
+    return res.status(200).json({ count });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+const getProductItemTypes = async (req, res) => {
+  try {
+    const itemtypes = await Product.aggregate([
+      {
+        $match: {
+          itemType: { $exists: true, $ne: null },
+        },
+      },
+      {
+        $group: {
+          _id: "$itemType",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { count: -1 },
+      },
+    ]);
+
+    res.status(200).json({ itemtypes });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
+const getSellersWithProductsforAdmin = async (req, res) => {
+  try {
+    const result = await Product.aggregate([
+      {
+        $lookup: {
+          from: "sellers", // must be the name of the Seller collection (lowercase and plural by default)
+          localField: "email",
+          foreignField: "email",
+          as: "sellerDetails",
+        },
+      },
+      {
+        $unwind: "$sellerDetails",
+      },
+      {
+        $project: {
+          _id: 0,
+          sellerUsername: "$sellerDetails.username",
+          sellerEmail: "$sellerDetails.email",
+          sellerPhone: "$sellerDetails.phone",
+          productName: "$name",
+          itemType: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching sellers with products:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -91,4 +166,7 @@ module.exports = {
   getAllProduct,
   getProductById,
   getSellerProducts,
+  getProductsCount,
+  getProductItemTypes,
+  getSellersWithProductsforAdmin,
 };

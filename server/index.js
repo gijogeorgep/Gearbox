@@ -8,6 +8,7 @@ const { connectDb } = require("./config/db");
 const { SellerRouter } = require("./router/sellerRouter");
 const { BuyerRouter } = require("./router/buyerRouter");
 const { ProductRouter } = require("./router/productRouter");
+const { rentRequestRouter } = require("./router/rentRequestRouter");
 
 require("dotenv").config();
 app.use(cors());
@@ -22,6 +23,7 @@ app.use("/api/admin", AdminRouter);
 app.use("/api/seller", SellerRouter);
 app.use("/api/buyer/", BuyerRouter);
 app.use("/api/product/", ProductRouter);
+app.use("/api/rentrequest/", rentRequestRouter);
 
 app.listen(port, () => {
   console.log("server running on http://localhost:4000");

@@ -27,6 +27,7 @@ import RentalRequest from "./pages/RentalRequest";
 import UpdateItem from "./pages/UpdateItem";
 import BuyerProfile from "./pages/BuyerProfile";
 import MyBooking from "./pages/MyBooking";
+import AdminBuyer from "./pages/AdminBuyer";
 
 function App() {
   const [admin, setAdmin] = useState(null);
@@ -97,6 +98,7 @@ function App() {
               />
 
               <Route path="/adminseller" element={<AdminSeller />} />
+              <Route path="/adminbuyer" element={<AdminBuyer />} />
 
               <Route path="buyerlogin" element={<BuyerLogin />} />
               <Route path="buyersignup" element={<BuyerSignUp />} />

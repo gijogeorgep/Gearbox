@@ -6,10 +6,10 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 
 const RentItem = () => {
-  const { id } = useParams(); // Get product ID from URL
-  const [product, setProduct] = useState(null); // State for product data
-  const [loading, setLoading] = useState(true); // State for loading
-  const [error, setError] = useState(null); // State for error
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -36,6 +36,7 @@ const RentItem = () => {
           },
         }
       );
+      
 
       console.log("Fetched data:", res.data);
       setProducts(res.data.products);
@@ -55,7 +56,7 @@ const RentItem = () => {
       try {
         const response = await axios.get(
           `http://localhost:4000/api/product/${id}`
-        ); // Adjust URL to your backend
+        ); 
         setProduct(response.data);
         setLoading(false);
       } catch (err) {
@@ -131,11 +132,50 @@ const RentItem = () => {
     return isValid;
   };
 
-  const notify = () => {
-    if (validateForm()) {
-      toast.success("Request sent successfully!");
+  const handleRentRequest = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Please log in to send a rent request");
+        return;
+      }
+
+      const rentRequestData = {
+        productId: product._id,
+        name,
+        email,
+        phoneNumber,
+        location: locationInput,
+        startDate,
+        endDate,
+      };
+
+      const response = await axios.post(
+        "http://localhost:4000/api/rentrequest/request",
+        rentRequestData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
+      toast.success("Rent request sent successfully");
+    } catch (error) {
+      console.error("Error sending rent request:", error);
+      toast.error(error.response?.data?.msg || "Failed to send rent request");
     }
   };
+
+  // const notify = () => {
+  //   if (validateForm()) {
+  //     toast.success("Request sent successfully!");
+  //   }
+  // };
 
   const getDayDifference = (start, end) => {
     const s = new Date(start);
@@ -411,7 +451,7 @@ const RentItem = () => {
                   </div>
                 )}
                 <button
-                  onClick={notify}
+                  onClick={handleRentRequest}
                   type="button"
                   className="bg-[#ffffff22] text-white border border-white/30 rounded-full px-6 py-3 mt-6 w-full max-w-[250px] hover:bg-white hover:text-black transition-all duration-300"
                 >
@@ -426,13 +466,12 @@ const RentItem = () => {
         </div>
       </div>
 
-      {/* for video tutorial */}
+      
       <div className="w-[500.01px] h-[281px] relative ml-96 mt-10">
         <iframe
           className="w-[499.56px] h-[281px] left-0 top-0 absolute rounded-[20.65px] z-10"
           src={`https://www.youtube.com/embed/${product?.tutorialLink}`}
           title="YouTube video player"
-          frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         ></iframe>

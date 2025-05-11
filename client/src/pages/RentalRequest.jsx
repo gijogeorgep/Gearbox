@@ -3,6 +3,9 @@ import Navbar from "../components/Navbar";
 import SellerDasboardSidebar from "../components/SellerDasboardSidebar";
 import "../components/fonts.css";
 
+
+
+
 const RentalRequest = () => {
   return (
     <div className="relative min-h-screen bg-[#0C0A0B] overflow-hidden">

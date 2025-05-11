@@ -8,30 +8,37 @@ import { Link, useNavigate } from "react-router-dom";
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const navigate = useNavigate(); // Added for navigation
+  const navigate = useNavigate();
 
-  // Profile click handler
+  // Updated profile click handler
   const handleProfileClick = () => {
     const token = localStorage.getItem("token");
-    if (token) {
+    const user = JSON.parse(localStorage.getItem("user")); // Expecting { _id, role }
+
+    if (!token || !user) {
+      alert("You must be logged in to view your profile.");
+      return;
+    }
+
+    if (user.role === "buyer") {
+      navigate("/buyerprofile");
+    } else if (user.role === "seller") {
       navigate("/sellerprofile");
     } else {
-      navigate("/sellerlogin");
+      alert("Invalid user role.");
     }
   };
 
   return (
     <>
-      {/* Navbar */}
       <div className="relative">
         <div className="flex items-center justify-between px-4 md:px-20 py-2">
-          {/* Logo */}
           <img src={logo} alt="logo" className="w-28 md:w-36" />
 
-          {/* Desktop Nav Items */}
           <div className="hidden md:flex items-center gap-8 text-white text-xl font-light font-[Montserrat] tracking-wide">
             <Link to="/">HOME</Link>
             <span>SERVICE</span>
+
             <div className="relative flex items-center">
               <span
                 className="cursor-pointer"
@@ -57,7 +64,7 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-            {/* Profile and Notification Icons */}
+
             <img
               src={profile}
               alt="profile icon"
@@ -67,7 +74,6 @@ const Navbar = () => {
             <img src={notification} alt="notification icon" className="w-7" />
           </div>
 
-          {/* Hamburger Icon for Mobile */}
           <div className="md:hidden">
             <img
               src="https://img.icons8.com/ios-filled/50/ffffff/menu--v1.png"
@@ -78,7 +84,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="fixed top-0 left-0 w-[80%] h-full bg-[#1f1f1f] text-white z-50 p-6 transition-transform duration-300">
             <div className="flex justify-between items-center mb-6">
@@ -98,10 +103,16 @@ const Navbar = () => {
               <div className="relative">
                 <span className="block mb-2">LOGIN</span>
                 <div className="pl-3 flex flex-col gap-2 text-sm text-white/90">
-                  <Link to="/sellerlogin" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link
+                    to="/sellerlogin"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
                     Seller
                   </Link>
-                  <Link to="/buyerlogin" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link
+                    to="/buyerlogin"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
                     Buyer
                   </Link>
                 </div>
@@ -123,7 +134,6 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* White Horizontal Line below navbar */}
       <div className="mt-2 w-full flex justify-center">
         <div className="w-full max-w-[1400px] h-px bg-white"></div>
       </div>

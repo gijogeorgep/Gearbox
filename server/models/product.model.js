@@ -4,7 +4,10 @@ const productSchema = new mongoose.Schema({
   email: {
     type: String,
   },
+  sellername:{
+    type:String,
 
+  },
   itemType: {
     type: String,
     required: true,
@@ -72,12 +75,6 @@ const productSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
-
-  // sellerId: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "Seller",
-  //   required: true,
-  // },
 
   createdAt: {
     type: Date,
