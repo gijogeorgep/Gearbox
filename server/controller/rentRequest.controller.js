@@ -20,13 +20,15 @@ const sendRentRequest = async (req, res) => {
     }
 
     const product = await Product.findById(productId);
-    if (!product || !product.seller) {
+    console.log(product);
+
+    if (!product) {
       return res.status(404).json({ msg: "Product or seller not found" });
     }
 
     const newRequest = await rentRequest.create({
       product: product._id,
-      seller: product.seller,
+      seller: req.body.seller,
       buyer: req.buyer._id, // Use authenticated buyer's ID
       name,
       email,
@@ -43,4 +45,15 @@ const sendRentRequest = async (req, res) => {
   }
 };
 
-module.exports = { sendRentRequest };
+const getRentrequest = async (req, res) => {
+  try {
+    const request = await rentRequest.find().populate("product");
+    console.log(request);
+    return res.status(200).json({ request });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+module.exports = { sendRentRequest,getRentrequest };

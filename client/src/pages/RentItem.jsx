@@ -19,36 +19,6 @@ const RentItem = () => {
   const [locationInput, setLocationInput] = useState("");
   const [pincode, setPincode] = useState("");
   const [address, setAddress] = useState("");
-  const [products, setProducts] = useState([]);
-
-  const fetchSellerProducts = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      console.log("Token:", token);
-
-      const res = await axios.get(
-        `http://localhost:4000/api/product/seller/products`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Cache-Control": "no-cache",
-          },
-        }
-      );
-      
-
-      console.log("Fetched data:", res.data);
-      setProducts(res.data.products);
-      products;
-    } catch (error) {
-      console.error("Error fetching seller products:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchSellerProducts();
-  }, []);
 
   // Fetch product by ID
   useEffect(() => {
@@ -56,8 +26,9 @@ const RentItem = () => {
       try {
         const response = await axios.get(
           `http://localhost:4000/api/product/${id}`
-        ); 
+        );
         setProduct(response.data);
+        console.log(response.data);
         setLoading(false);
       } catch (err) {
         setError(err.response?.data?.msg || "Failed to fetch product");
@@ -171,12 +142,6 @@ const RentItem = () => {
     }
   };
 
-  // const notify = () => {
-  //   if (validateForm()) {
-  //     toast.success("Request sent successfully!");
-  //   }
-  // };
-
   const getDayDifference = (start, end) => {
     const s = new Date(start);
     const e = new Date(end);
@@ -266,6 +231,7 @@ const RentItem = () => {
                 alt="phone-disconnected"
               />
             </div>
+            <span>{product?.phone || "Seller Phone"}</span>
           </div>
           <div className="flex gap-2 items-center">
             <img
@@ -386,7 +352,7 @@ const RentItem = () => {
                       className="text-[11px] font-light text-gray-200 tracking-wide line-clamp-1"
                       title={product?.sellerName}
                     >
-                      {products?.sellername}
+                      {product?.sellerName || "Seller Name"}
                     </p>
                   </div>
                   <div className="space-y-1.5 px-1.5">
@@ -466,7 +432,6 @@ const RentItem = () => {
         </div>
       </div>
 
-      
       <div className="w-[500.01px] h-[281px] relative ml-96 mt-10">
         <iframe
           className="w-[499.56px] h-[281px] left-0 top-0 absolute rounded-[20.65px] z-10"

@@ -6,14 +6,12 @@ import SellerDasboardSidebar from "../components/SellerDasboardSidebar";
 const MyList = () => {
   const [products, setProducts] = useState([]);
 
-
   useEffect(() => {
     const fetchSellerProducts = async () => {
       try {
         const token = localStorage.getItem("token");
 
         console.log("Token:", token);
-      
 
         const res = await axios.get(
           `http://localhost:4000/api/product/seller/products`,

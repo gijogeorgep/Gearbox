@@ -74,6 +74,33 @@ const getProductById = async (req, res) => {
   }
 };
 
+const updateProductList = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const sellerId = req.seller.id;
+    const updateData = req.body;
+
+    const updateProduct = await Product.findOneAndUpdate(
+      { _id: productId, seller: sellerId },
+      updateData,
+      { new: true }
+    );
+
+    if (!updateProduct) {
+      return res
+        .status(401)
+        .json({ msg: "product not found or not authorized" });
+    }
+
+    return res
+      .status(200)
+      .json({ msg: "product updates successfuly", updateData });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "internal server error" });
+  }
+};
+
 const getSellerProducts = async (req, res) => {
   try {
     const email = req.seller.email;
@@ -165,6 +192,7 @@ module.exports = {
   UploadProduct,
   getAllProduct,
   getProductById,
+  updateProductList,
   getSellerProducts,
   getProductsCount,
   getProductItemTypes,

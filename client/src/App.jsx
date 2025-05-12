@@ -28,6 +28,7 @@ import UpdateItem from "./pages/UpdateItem";
 import BuyerProfile from "./pages/BuyerProfile";
 import MyBooking from "./pages/MyBooking";
 import AdminBuyer from "./pages/AdminBuyer";
+import ReturnPolicy from "./pages/ReturnPolicy";
 
 function App() {
   const [admin, setAdmin] = useState(null);
@@ -131,6 +132,8 @@ function App() {
 
               <Route path="mylist" element={<MyList />} />
               <Route path="rentalrequest" element={<RentalRequest />} />
+
+              <Route path="returnpolicy" element={<ReturnPolicy />} />
             </Routes>
           </BrowserRouter>
         </Admincontext.Provider>

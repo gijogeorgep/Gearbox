@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import SellerDasboardSidebar from "../components/SellerDasboardSidebar";
 import "../components/fonts.css";
-
-
-
+import axios from "axios";
 
 const RentalRequest = () => {
+  const [requests, setRequests] = useState([]);
+
+  const fetchRentRequest = async () => {
+    const response = await axios.get(
+      "http://localhost:4000/api/rentrequest/getrequest"
+    );
+    setRequests(response.data.request);
+    console.log("data:", response.data.requests);
+  };
+  useEffect(() => {
+    fetchRentRequest();
+  }, []);
   return (
     <div className="relative min-h-screen bg-[#0C0A0B] overflow-hidden">
       {/* Content Layer */}
@@ -30,41 +40,55 @@ const RentalRequest = () => {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 flex justify-center items-center px-4">
+          <div className="flex-1 flex justify-center items-center px-3">
             <div className="w-full max-w-7xl bg-white/10 p-6 rounded-xl border border-white/10 backdrop-blur-sm flex flex-col">
-              <div className="grid grid-cols-1 sm:grid-cols-7 gap-6 sm:gap-12 mb-6 text-sm sm:text-base text-white font-[Montserrat]">
+              {/* Table Headers */}
+              <div className="grid grid-cols-8 gap-4 mb-4 text-sm sm:text-base text-white font-[Montserrat] font-semibold">
                 <span>Name</span>
-                <span>Item</span>
+                <span>Item Type</span>
+                <span>Item Name</span>
                 <span>Location</span>
                 <span>Phone No</span>
-                <span>Delivery Day and Time</span>
-                <span>Return Day and Time</span>
-                <span>Payment Status</span>
+                <span>Delivery</span>
+                <span>Return</span>
+                <span> Payemnt Status</span>
               </div>
 
               <div className="w-full h-px bg-white/20 mb-4"></div>
 
-              {/* Content Row */}
-              <div className="w-full sm:h-[180px] md:h-[200px] relative rounded-[10px] mt-5">
-                <div className="w-full h-[90px] bg-[#d9d9d9]/10 rounded-[10px] p-4 flex gap-4 sm:gap-12 items-center justify-between">
-                  <div className="text-sm sm:text-base text-white font-light">
-                    <div className="grid grid-cols-1 sm:grid-cols-7 gap-4 sm:gap-12">
-                      <span>Alan</span>
-                      <span>cannon</span>
-                      <span>mavoor</span>
-                      <span>9874563215</span>
-                      <span>12-1-2020, 5:00 pm</span>
-                      <span>13-1-2020, 8:00 pm</span>
-                      <div className="relative w-[108.56px] h-[30.06px] rounded-[10px] mt-1">
-                        <div className="absolute inset-0 bg-[#0caf3a] rounded-[10px]" />
-                        <button className="absolute inset-0 text-center justify-center text-white text-xs font-normal font-[Montserrat] tracking-wide">
-                          DONE
-                        </button>
-                      </div>
+              {/* Request Rows */}
+              {requests.map((req, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-8 gap-4 items-center text-sm sm:text-base text-white font-light bg-[#d9d9d9]/10 rounded-[10px] px-4 py-3 mb-3"
+                >
+                  <span>{req.name}</span>
+                  <span>{req.product?.itemType}</span>
+                  <span>{req.product?.name}</span>
+                  <span>{req.location}</span>
+                  <span>{req.phoneNumber}</span>
+                  <span>{req.startDate}</span>
+                  <span>{req.endDate}</span>
+
+                  {/* Payment Button */}
+
+                  <div className="flex flex-col gap-3">
+                    <div className="relative w-[100px] h-[30px] rounded-[10px]">
+                      <div className="absolute inset-0 bg-[#0caf3a] rounded-[10px] flex flex-col" />
+                      <button className="absolute inset-0 text-white text-xs font-[Montserrat] tracking-wide">
+                        Approve
+                      </button>
+                    </div>
+
+                    <div className="relative w-[100px] h-[30px] rounded-[10px]">
+                      <div className="absolute inset-0 bg-[#df1b1b] rounded-[10px] flex flex-col" />
+                      <button className="absolute inset-0 text-white text-xs font-[Montserrat] tracking-wide">
+                        Reject
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

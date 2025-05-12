@@ -6,7 +6,7 @@ const rentRequestSchema = new mongoose.Schema({
     ref: "Product",
     required: true,
   },
-  seller: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  seller: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   buyer: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   name: String,
   email: String,

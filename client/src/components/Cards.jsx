@@ -6,20 +6,43 @@ const Cards = ({ product }) => {
   const navigate = useNavigate();
 
   const handleRentClick = () => {
-    // Log product _id for debugging
     console.log("Navigating with product _id:", product._id);
     if (!product._id) {
       console.error("Product _id is undefined:", product);
       return;
     }
-    // Navigate to RentItem page with product _id
     navigate(`/rentitem/${product._id}`, { state: { product } });
   };
 
   return (
-    <div className="w-full max-w-[278px] h-auto relative rounded-2xl bg-gradient-to-b from-[#1c1c1c] to-[#4f4a4a] p-5 mx-auto shadow-inner shadow-[#00000040] flex flex-col justify-between">
+    <div className="w-full max-w-[278px] h-auto relative rounded-2xl bg-gradient-to-b from-[#1c1c1c] to-[#4f4a4a] p-5 mx-auto shadow-inner shadow-[#00000040] flex flex-col justify-start">
+      {/* Product Image First */}
+      <div className="relative w-full h-[160px] rounded-xl overflow-hidden">
+        <img
+          src={
+            product.imageUrl ||
+            "https://via.placeholder.com/278x160?text=No+Image"
+          }
+          alt={product.name}
+          className="w-full h-full object-cover object-center"
+          loading="lazy"
+          onError={(e) =>
+            (e.target.src =
+              "https://via.placeholder.com/278x160?text=Image+Error")
+          }
+        />
+      </div>
+
+      {/* Product Name & Description */}
+      <div className="text-white text-center mt-3 text-xs sm:text-sm font-medium font-[montserrat] leading-snug tracking-wide">
+        <div>{product.name}</div>
+        <div className="text-gray-300 text-xs font-light mt-1">
+          {product.description}
+        </div>
+      </div>
+
       {/* Location */}
-      <div className="flex gap-2 mt-2 items-center">
+      <div className="flex gap-2 mt-3 items-center">
         <img
           width="14"
           height="14"
@@ -31,33 +54,8 @@ const Cards = ({ product }) => {
         </div>
       </div>
 
-      {/* Product Image with Aspect Ratio Container */}
-      <div className="relative w-full h-[130px] mt-3 rounded-xl overflow-hidden">
-        <img
-          src={
-            product.imageUrl ||
-            "https://via.placeholder.com/278x130?text=No+Image"
-          }
-          alt={product.name}
-          className="w-full h-full object-cover object-center"
-          loading="lazy"
-          onError={(e) =>
-            (e.target.src =
-              "https://via.placeholder.com/278x130?text=Image+Error")
-          }
-        />
-      </div>
-
-      {/* Product Title and Description */}
-      <div className="text-white text-center mt-3 text-xs sm:text-sm font-medium font-[montserrat] leading-snug tracking-wide">
-        <div>{product.name}</div>
-        <div className="text-gray-300 text-xs font-light mt-1">
-          {product.description}
-        </div>
-      </div>
-
       {/* Price and Rent Button */}
-      <div className="flex justify-between items-center mt-3 px-2">
+      <div className="flex justify-between items-center mt-4 px-2">
         <div className="flex items-start gap-2">
           <img
             width="18"

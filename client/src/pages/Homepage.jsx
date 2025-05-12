@@ -6,6 +6,7 @@ import Items from "../components/Items";
 import FilterItem from "../components/FilterItem";
 import Cards from "../components/Cards";
 import axios from "axios";
+import Footer from "../components/Footer";
 
 const Homepage = () => {
   const [products, setProducts] = useState([]);
@@ -37,6 +38,7 @@ const Homepage = () => {
             <Cards key={product.id} product={product} />
           ))}
         </div>
+        <Footer/>
       </div>
     </>
   );
