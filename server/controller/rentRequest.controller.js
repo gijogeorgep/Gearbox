@@ -28,7 +28,7 @@ const sendRentRequest = async (req, res) => {
 
     const newRequest = await rentRequest.create({
       product: product._id,
-      seller: req.body.seller,
+      seller: req.seller._id,
       buyer: req.buyer._id, // Use authenticated buyer's ID
       name,
       email,
@@ -56,4 +56,53 @@ const getRentrequest = async (req, res) => {
   }
 };
 
-module.exports = { sendRentRequest,getRentrequest };
+const getRentrequestForBuyer = async (req, res) => {
+  try {
+    if (!req.buyer) {
+      return res.status(400).json({ msg: "unauthorized" });
+    }
+    const email = req.buyer.email;
+
+    const requests = await rentRequest.find({ email }).populate("product");
+
+    if (!requests) {
+      return res.status(401).json({ msg: "email not found" });
+    }
+
+    return res.status(200).json(requests);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+const getRentRequestForSeller = async (req, res) => {
+  try {
+    if (!req.seller) {
+      return res.status(400).json({ msg: "unauthorized" });
+    }
+
+    const sellerEmail = req.seller.email;
+
+    // Get all rent requests and populate the product
+    const requests = await rentRequest.find().populate("product");
+
+    // Filter only those requests where product.sellerEmail === sellerEmail
+    const sellerRequests = requests.filter(
+      (req) => req.product && req.product.sellerEmail === sellerEmail
+    );
+    console.log("seller:", sellerRequests);
+
+    return res.status(200).json(sellerRequests);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+module.exports = {
+  sendRentRequest,
+  getRentrequest,
+  getRentrequestForBuyer,
+  getRentRequestForSeller,
+};

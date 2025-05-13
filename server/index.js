@@ -9,6 +9,7 @@ const { SellerRouter } = require("./router/sellerRouter");
 const { BuyerRouter } = require("./router/buyerRouter");
 const { ProductRouter } = require("./router/productRouter");
 const { rentRequestRouter } = require("./router/rentRequestRouter");
+const { CheckoutRouter } = require("./router/checkoutRouter");
 
 require("dotenv").config();
 app.use(cors());
@@ -20,10 +21,11 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/admin", AdminRouter);
-app.use("/api/seller", SellerRouter);
+app.use("/api/seller/", SellerRouter);
 app.use("/api/buyer/", BuyerRouter);
 app.use("/api/product/", ProductRouter);
 app.use("/api/rentrequest/", rentRequestRouter);
+app.use("/api/checkout/", CheckoutRouter);
 
 app.listen(port, () => {
   console.log("server running on http://localhost:4000");

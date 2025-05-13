@@ -31,7 +31,7 @@ const Hero = () => {
     <div className="relative w-full h-[600px] md:h-[700px] lg:h-[563px]">
       {/* Background Image */}
       <img
-        className="absolute inset-0 w-full h-full object-cover opacity-20"
+        className="absolute inset-0 w-[1800px] h-full object-cover opacity-20"
         src={heroimg}
         alt="Hero background"
       />

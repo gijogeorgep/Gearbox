@@ -7,6 +7,7 @@ const SellItem = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [brand, setBrand] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+
   const [smallImage1, setSmallImage1] = useState(null);
   const [smallImage2, setSmallImage2] = useState(null);
 
@@ -203,6 +204,15 @@ const SellItem = () => {
                 <label className="w-full max-w-md bg-white/10 border border-white/20 rounded-xl p-6 flex flex-col items-center gap-4 cursor-pointer">
                   {uploadingMainImage ? (
                     <p>Uploading...</p>
+                  ) : imageUrl ? (
+                    <>
+                      <img
+                        src={imageUrl}
+                        alt="Uploaded Thumbnail"
+                        className="w-24 h-24 object-cover rounded"
+                      />
+                      <p className="text-sm text-white/70">Click to change</p>
+                    </>
                   ) : (
                     <>
                       <img
@@ -214,6 +224,7 @@ const SellItem = () => {
                       <p>Upload Thumbnail</p>
                     </>
                   )}
+
                   <input
                     type="file"
                     className="hidden"

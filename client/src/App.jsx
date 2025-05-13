@@ -128,7 +128,7 @@ function App() {
                 }
               />
 
-              <Route path="updateitem" element={<UpdateItem />} />
+              <Route path="/updateitem/:itemId" element={<UpdateItem />} />
 
               <Route path="mylist" element={<MyList />} />
               <Route path="rentalrequest" element={<RentalRequest />} />

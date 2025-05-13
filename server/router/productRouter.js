@@ -8,6 +8,7 @@ const {
   getProductItemTypes,
   getSellersWithProductsforAdmin,
   updateProductList,
+  updateProduct,
 } = require("../controller/product.controller");
 const { Product } = require("../models/product.model");
 const { authenticateSeller } = require("../middleware/auth");
@@ -16,7 +17,7 @@ const ProductRouter = express.Router();
 
 ProductRouter.post("/create", authenticateSeller, UploadProduct);
 ProductRouter.get("/all", getAllProduct);
-ProductRouter.get("/update", authenticateSeller, updateProductList);
+ProductRouter.put("/update/:id", authenticateSeller, updateProduct);
 ProductRouter.get("/seller/products", authenticateSeller, getSellerProducts);
 ProductRouter.get("/count", getProductsCount);
 ProductRouter.get("/itemtypes", getProductItemTypes);

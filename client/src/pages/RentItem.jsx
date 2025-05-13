@@ -153,6 +153,12 @@ const RentItem = () => {
   const dayDiff =
     startDate && endDate ? getDayDifference(startDate, endDate) : null;
 
+  const baseRate = product?.rate || 500;
+  const addonCost = dayDiff && dayDiff > 1 ? (dayDiff - 1) * 100 : 0;
+  const deliveryFee = 200;
+  const cautionDeposit = product?.cautionDeposit || 0;
+  const totalPayable = baseRate + addonCost + deliveryFee + cautionDeposit;
+
   // Handle loading and error states
   if (loading) {
     return <div className="text-white text-center mt-10">Loading...</div>;
@@ -368,8 +374,9 @@ const RentItem = () => {
                     <div className="flex flex-col">
                       <div className="flex justify-between text-sm font-semibold text-white tracking-tight">
                         <p>Add On Days</p>
-                        <p>incremnt rate</p>
+                        <p>₹{addonCost}</p>
                       </div>
+
                       <span className="text-xs font-light text-gray-200 tracking-wide line-clamp-2">
                         ₹100 increment
                       </span>
@@ -380,7 +387,8 @@ const RentItem = () => {
                         <p>{product?.cautionDeposit}</p>
                       </div>
                       <span className="text-xs font-light text-gray-200 tracking-wide line-clamp-2">
-                        ₹100 refundable after return
+                        {product?.cautionDeposit} return after returning the
+                        item
                       </span>
                     </div>
                     <div className="flex flex-col">
@@ -395,7 +403,7 @@ const RentItem = () => {
                     <hr className="border-gray-600/20 my-1.5" />
                     <div className="flex justify-between text-base font-bold text-white tracking-tight bg-white/5 rounded px-1.5 py-0.5">
                       <p>TO PAY</p>
-                      <p>₹{product?.rate ? product.rate + 500 : 980}</p>
+                      <p>₹{totalPayable}</p>
                     </div>
                   </div>
                 </div>

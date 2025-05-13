@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import SellerDasboardSidebar from "../components/SellerDasboardSidebar";
+import { useNavigate } from "react-router-dom"; // ✅ added for navigation
 
 const MyList = () => {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate(); // ✅ setup navigate
 
   useEffect(() => {
     const fetchSellerProducts = async () => {
@@ -65,7 +67,10 @@ const MyList = () => {
                   {product.description}
                 </div>
                 <div className="flex justify-between mt-4">
-                  <button className="bg-[#df1b1b] rounded-[6.92px] px-3 py-1 text-white text-sm">
+                  <button
+                    onClick={() => navigate(`/updateitem/${product._id}`)} // ✅ dynamic routing
+                    className="bg-[#df1b1b] rounded-[6.92px] px-3 py-1 text-white text-sm"
+                  >
                     UPDATE
                   </button>
                   <button className="bg-[#df1b1b] rounded-[6.92px] px-3 py-1 text-white text-sm">

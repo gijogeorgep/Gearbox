@@ -74,33 +74,85 @@ const getProductById = async (req, res) => {
   }
 };
 
-const updateProductList = async (req, res) => {
+const updateProduct = async (req, res) => {
   try {
-    const { productId } = req.params;
-    const sellerId = req.seller.id;
-    const updateData = req.body;
+    const productId = req.params.id;
+    console.log("Updating product with ID:", productId);
+    console.log("Request body:", req.body);
 
-    const updateProduct = await Product.findOneAndUpdate(
-      { _id: productId, seller: sellerId },
-      updateData,
-      { new: true }
-    );
+    const {
+      email,
+      itemType,
+      brand,
+      name,
+      description,
+      detailedDescription,
+      imageUrl,
+      smallImages,
+      rate,
+      location,
+      cautionDeposit,
+      tutorialLink,
+    } = req.body;
 
-    if (!updateProduct) {
-      return res
-        .status(401)
-        .json({ msg: "product not found or not authorized" });
+    // Validate required fields
+    if (!imageUrl) {
+      return res.status(400).json({ msg: "Main image is required" });
+    }
+    if (
+      !itemType ||
+      !name ||
+      !description ||
+      !location ||
+      !rate ||
+      !cautionDeposit
+    ) {
+      return res.status(400).json({ msg: "Please fill all required fields" });
     }
 
-    return res
-      .status(200)
-      .json({ msg: "product updates successfuly", updateData });
+    // Find the product by ID
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ msg: "Product not found" });
+    }
+
+    // Check user authorization (commented out for now - adjust based on your auth setup)
+    // if (product.email !== req.user.email || email !== req.user.email) {
+    //   return res
+    //     .status(403)
+    //     .json({ msg: "Not authorized to update this product" });
+    // }
+
+    // Update product fields
+    product.email = email;
+    product.itemType = itemType;
+    product.brand = brand || "";
+    product.name = name;
+    product.description = description;
+    product.detailedDescription =
+      detailedDescription?.filter((point) => point.trim() !== "") || [];
+    product.imageUrl = imageUrl;
+    product.smallImages = smallImages?.filter(Boolean) || [];
+    product.rate = rate;
+    product.location = location;
+    product.cautionDeposit = cautionDeposit;
+    product.tutorialLink = tutorialLink || "";
+
+    // Save updated product
+    const updatedProduct = await product.save();
+    console.log("Product updated successfully:", updatedProduct._id);
+
+    return res.status(200).json({
+      msg: "Product updated successfully",
+      product: updatedProduct,
+    });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ msg: "internal server error" });
+    console.error("Update product error:", error);
+    return res
+      .status(500)
+      .json({ msg: "Internal server error", error: error.message });
   }
 };
-
 const getSellerProducts = async (req, res) => {
   try {
     const email = req.seller.email;
@@ -192,7 +244,7 @@ module.exports = {
   UploadProduct,
   getAllProduct,
   getProductById,
-  updateProductList,
+  updateProduct,
   getSellerProducts,
   getProductsCount,
   getProductItemTypes,

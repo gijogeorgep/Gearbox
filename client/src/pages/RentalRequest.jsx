@@ -8,15 +8,23 @@ const RentalRequest = () => {
   const [requests, setRequests] = useState([]);
 
   const fetchRentRequest = async () => {
+    const token = localStorage.getItem("token");
+    console.log(token);
     const response = await axios.get(
-      "http://localhost:4000/api/rentrequest/getrequest"
+      "http://localhost:4000/api/rentrequest/requestForSeller",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
-    setRequests(response.data.request);
-    console.log("data:", response.data.requests);
+    setRequests(response.data);
+    console.log("data:", response.data);
   };
   useEffect(() => {
     fetchRentRequest();
   }, []);
+
   return (
     <div className="relative min-h-screen bg-[#0C0A0B] overflow-hidden">
       {/* Content Layer */}
