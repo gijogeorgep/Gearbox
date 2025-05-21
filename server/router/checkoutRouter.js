@@ -1,7 +1,12 @@
-const expess = require("express");
+const express = require("express");
 const { Checkout } = require("../models/checkoutProduct.model");
-const { Router } = require("express");
+const {
+  checkouts,
+  getCheckoutById,
+} = require("../controller/checkout.controller");
 
-const CheckoutRouter = expess.Router();
+const CheckoutRouter = express.Router();
+
+CheckoutRouter.post("/createCheckout", checkouts);
 
 module.exports = { CheckoutRouter };

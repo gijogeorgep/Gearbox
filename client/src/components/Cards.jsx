@@ -14,6 +14,8 @@ const Cards = ({ product }) => {
     navigate(`/rentitem/${product._id}`, { state: { product } });
   };
 
+
+  
   return (
     <div className="w-full max-w-[278px] h-auto relative rounded-2xl bg-gradient-to-b from-[#1c1c1c] to-[#4f4a4a] p-5 mx-auto shadow-inner shadow-[#00000040] flex flex-col justify-start">
       {/* Product Image First */}

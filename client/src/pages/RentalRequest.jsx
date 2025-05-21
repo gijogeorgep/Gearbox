@@ -9,21 +9,47 @@ const RentalRequest = () => {
 
   const fetchRentRequest = async () => {
     const token = localStorage.getItem("token");
-    console.log(token);
-    const response = await axios.get(
-      "http://localhost:4000/api/rentrequest/requestForSeller",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    setRequests(response.data);
-    console.log("data:", response.data);
+    try {
+      const response = await axios.get(
+        "http://localhost:4000/api/rentrequest/requestForSeller",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setRequests(response.data);
+    } catch (error) {
+      console.error("Fetch Error:", error);
+    }
   };
+
   useEffect(() => {
     fetchRentRequest();
   }, []);
+
+  const updateRequestStatus = async (requestId, status) => {
+    const confirmAction = window.confirm(
+      `Are you sure you want to ${status.toLowerCase()} this request?`
+    );
+    if (!confirmAction) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:4000/api/rentrequest/update/${requestId}`,
+        { status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchRentRequest(); // Refresh list after update
+    } catch (error) {
+      console.error("Update Request Error:", error);
+    }
+  };
 
   return (
     <div className="relative min-h-screen bg-[#0C0A0B] overflow-hidden">
@@ -59,7 +85,7 @@ const RentalRequest = () => {
                 <span>Phone No</span>
                 <span>Delivery</span>
                 <span>Return</span>
-                <span> Payemnt Status</span>
+                <span>Status</span>
               </div>
 
               <div className="w-full h-px bg-white/20 mb-4"></div>
@@ -68,7 +94,11 @@ const RentalRequest = () => {
               {requests.map((req, index) => (
                 <div
                   key={index}
-                  className="grid grid-cols-8 gap-4 items-center text-sm sm:text-base text-white font-light bg-[#d9d9d9]/10 rounded-[10px] px-4 py-3 mb-3"
+                  className={`grid grid-cols-8 gap-4 items-center text-sm sm:text-base text-white font-light bg-[#d9d9d9]/10 rounded-[10px] px-4 py-3 mb-3 ${
+                    req.status === "Approved" || req.status === "Rejected"
+                      ? "opacity-50 pointer-events-none"
+                      : ""
+                  }`}
                 >
                   <span>{req.name}</span>
                   <span>{req.product?.itemType}</span>
@@ -78,22 +108,32 @@ const RentalRequest = () => {
                   <span>{req.startDate}</span>
                   <span>{req.endDate}</span>
 
-                  {/* Payment Button */}
-
-                  <div className="flex flex-col gap-3">
-                    <div className="relative w-[100px] h-[30px] rounded-[10px]">
-                      <div className="absolute inset-0 bg-[#0caf3a] rounded-[10px] flex flex-col" />
-                      <button className="absolute inset-0 text-white text-xs font-[Montserrat] tracking-wide">
-                        Approve
-                      </button>
-                    </div>
-
-                    <div className="relative w-[100px] h-[30px] rounded-[10px]">
-                      <div className="absolute inset-0 bg-[#df1b1b] rounded-[10px] flex flex-col" />
-                      <button className="absolute inset-0 text-white text-xs font-[Montserrat] tracking-wide">
-                        Reject
-                      </button>
-                    </div>
+                  {/* Approve / Reject Buttons */}
+                  <div className="flex flex-col gap-1 text-center">
+                    {req.status === "Approved" || req.status === "Rejected" ? (
+                      <span className="text-xs font-semibold">
+                        {req.status}
+                      </span>
+                    ) : (
+                      <>
+                        <button
+                          className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1 rounded-md font-semibold"
+                          onClick={() =>
+                            updateRequestStatus(req._id, "Approved")
+                          }
+                        >
+                          Approve
+                        </button>
+                        <button
+                          className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded-md font-semibold"
+                          onClick={() =>
+                            updateRequestStatus(req._id, "Rejected")
+                          }
+                        >
+                          Reject
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               ))}

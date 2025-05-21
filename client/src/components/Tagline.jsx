@@ -6,6 +6,7 @@ const Tagline = () => {
   return (
     <div className="w-full h-[450px] sm:h-[520px] md:h-[620px] max-w-6xl mx-auto px-4 pt-12 text-white font-[Montserrat] text-center mt-4 overflow-hidden">
       {/* Gearbox Image */}
+
       <div className="flex justify-center mb-4 sm:mb-6">
         <img
           className="w-[80px] sm:w-[100px] md:w-[120px] lg:w-[140px] xl:w-[160px]"

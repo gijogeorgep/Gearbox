@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-
+import CheckoutCard from "../components/CheckoutCard";
 const RentItem = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -119,6 +119,7 @@ const RentItem = () => {
         productId: product._id,
         name,
         email,
+        sellerEmail: product.email,
         phoneNumber,
         location: locationInput,
         startDate,
@@ -152,12 +153,6 @@ const RentItem = () => {
 
   const dayDiff =
     startDate && endDate ? getDayDifference(startDate, endDate) : null;
-
-  const baseRate = product?.rate || 500;
-  const addonCost = dayDiff && dayDiff > 1 ? (dayDiff - 1) * 100 : 0;
-  const deliveryFee = 200;
-  const cautionDeposit = product?.cautionDeposit || 0;
-  const totalPayable = baseRate + addonCost + deliveryFee + cautionDeposit;
 
   // Handle loading and error states
   if (loading) {
@@ -346,13 +341,14 @@ const RentItem = () => {
                     />
                   </div>
                 </div>
-                <div className="max-w-[240px] w-full bg-white/15 backdrop-blur-md border border-white/10 rounded-md p-2.5 text-white space-y-1.5 text-xs font-[montserrat] mx-auto sm:mx-auto transition-transform hover:scale-[1.02]">
+
+                {/* <div className="max-w-[240px] w-full bg-white/15 backdrop-blur-md border border-white/10 rounded-md p-2.5 text-white space-y-1.5 text-xs font-[montserrat] mx-auto sm:mx-auto transition-transform hover:scale-[1.02]">
                   <div className="space-y-0.5">
                     <h2
                       className="text-sm font-bold text-white tracking-tight truncate"
                       title={product?.name}
                     >
-                      {product?.name || "Canon EOS Rebel T7"}
+                      {product?.name}
                     </h2>
                     <p
                       className="text-[11px] font-light text-gray-200 tracking-wide line-clamp-1"
@@ -406,7 +402,14 @@ const RentItem = () => {
                       <p>₹{totalPayable}</p>
                     </div>
                   </div>
-                </div>
+                </div> */}
+
+                <CheckoutCard
+                  product={product}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+
                 {startDate && endDate && dayDiff > 0 && (
                   <div className="text-white mt-4 font-['Montserrat'] text-sm">
                     <p>

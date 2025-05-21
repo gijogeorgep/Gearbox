@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import SellerDasboardSidebar from "../components/SellerDasboardSidebar";
-import { useNavigate } from "react-router-dom"; // ✅ added for navigation
+import { useNavigate } from "react-router-dom"; 
 
 const MyList = () => {
   const [products, setProducts] = useState([]);
-  const navigate = useNavigate(); // ✅ setup navigate
-
+  const navigate = useNavigate(); 
   useEffect(() => {
     const fetchSellerProducts = async () => {
       try {

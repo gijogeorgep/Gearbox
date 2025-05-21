@@ -29,6 +29,7 @@ import BuyerProfile from "./pages/BuyerProfile";
 import MyBooking from "./pages/MyBooking";
 import AdminBuyer from "./pages/AdminBuyer";
 import ReturnPolicy from "./pages/ReturnPolicy";
+import CheckOut from "./pages/CheckOut";
 
 function App() {
   const [admin, setAdmin] = useState(null);
@@ -132,6 +133,8 @@ function App() {
 
               <Route path="mylist" element={<MyList />} />
               <Route path="rentalrequest" element={<RentalRequest />} />
+
+              <Route path="/checkout/:id" element={<CheckOut />} />
 
               <Route path="returnpolicy" element={<ReturnPolicy />} />
             </Routes>

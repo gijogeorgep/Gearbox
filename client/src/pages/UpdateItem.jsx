@@ -41,18 +41,18 @@ const UpdateItem = () => {
         console.log("API Response:", response.data);
         const item = response.data;
 
-        setSelectedItem(item.itemType || "");
-        setBrand(item.brand || "");
-        setImageUrl(item.imageUrl || "");
+        setSelectedItem(item.itemType);
+        setBrand(item.brand );
+        setImageUrl(item.imageUrl );
         setSmallImage1(
           item.smallImages && item.smallImages[0] ? item.smallImages[0] : null
         );
         setSmallImage2(
           item.smallImages && item.smallImages[1] ? item.smallImages[1] : null
         );
-        setName(item.name || "");
-        setDescription(item.description || "");
-        setLocation(item.location || "");
+        setName(item.name );
+        setDescription(item.description );
+        setLocation(item.location );
 
         // Handle description points with fallback
         if (item.detailedDescription && item.detailedDescription.length > 0) {

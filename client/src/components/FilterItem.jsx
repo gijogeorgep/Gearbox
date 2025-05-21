@@ -1,54 +1,87 @@
 import React from "react";
 import "./fonts.css";
+import { useState } from "react";
+import { useEffect } from "react";
 
-const FilterItem = () => {
+const FilterItem = ({ onChange }) => {
+  const [name, setname] = useState("");
+  const [location, setLocation] = useState("");
+  const [itemType, setItemType] = useState("");
+  const [brand, setBrand] = useState("");
+
+  useEffect(() => {
+    onChange({ name, location, itemType, brand });
+  }, [name, location, itemType, brand]);
+  
   return (
     <div className="w-full px-4 space-y-12 py-8">
-      {/* Filter By Items */}
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-white text-lg sm:text-xl font-normal font-[montserrat] mb-4">
-          Filter By Items
-        </h2>
-        <div className="flex flex-wrap justify-start gap-3 sm:gap-4">
-          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-white text-[#df1b1b] text-sm sm:text-xl font-[montserrat] rounded-[10px]">
-            CAMERA
-          </button>
-          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
-            TRIPOD
-          </button>
-          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
-            GIMBAL
-          </button>
-          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
-            LENS
-          </button>
-          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
-            LIGHTS
-          </button>
-        </div>
-      </div>
+      <div className="max-w-6xl mx-auto">
+        <img
+          width="40"
+          height="40"
+          src="https://img.icons8.com/ios/50/FFFFFF/filter--v1.png"
+          alt="filter--v1"
+        />
+        <div className="w-full bg-[#4f4a4a] rounded-xl p-4">
+          <div className="flex flex-wrap justify-center md:justify-between items-center gap-4">
+            <div className="bg-white/10 rounded-xl w-full md:w-[230px] h-12">
+              <input
+                onChange={(e) => setname(e.target.value)}
+                value={name}
+                className="w-full h-full p-3 outline-none bg-transparent text-white placeholder-white"
+                type="text"
+                placeholder="Search by name"
+              />
+            </div>
 
-      {/* Filter By Brands */}
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-white text-lg sm:text-xl font-normal font-[montserrat] mb-4">
-          Filter By Brands
-        </h2>
-        <div className="flex flex-wrap justify-start gap-3 sm:gap-4">
-          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
-            SONY
-          </button>
-          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
-            NIKON
-          </button>
-          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-white text-[#df1b1b] text-sm sm:text-xl font-[montserrat] rounded-[10px]">
-            CANNON
-          </button>
-          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
-            FUJI FILM
-          </button>
-          <button className="min-w-[100px] sm:min-w-[120px] px-3 sm:px-4 py-2 bg-[#df1b1b] text-white text-sm sm:text-xl font-[montserrat] rounded-[10px]">
-            PANASONIC
-          </button>
+            <div className="bg-white/10 rounded-xl w-full md:w-[230px] h-12">
+              <input
+                onChange={(e) => setLocation(e.target.value)}
+                value={location}
+                className="w-full h-full p-3 outline-none bg-transparent text-white placeholder-white"
+                type="text"
+                placeholder="Search by location"
+              />
+            </div>
+
+            <div className="bg-white/10 rounded-xl w-full md:w-[230px] h-12">
+              <select
+                onChange={(e) => {
+                  setItemType(e.target.value);
+                  if (e.target.value !== "camera") {
+                    setBrand("");
+                  }
+                }}
+                value={itemType}
+                className="w-full h-full p-3 outline-none bg-transparent"
+                name="item-type"
+              >
+                <option value="">Select item type</option>
+                <option value="camera">Camera</option>
+                <option value="lens">Lens</option>
+                <option value="gimbal">Gimbal</option>
+                <option value="tripod">Tripod</option>
+              </select>
+            </div>
+
+            {/* Only show this if itemType is "camera" */}
+            {itemType === "camera" && (
+              <div className="bg-white/10 rounded-xl w-full md:w-[230px] h-12 mt-4">
+                <select
+                  onChange={(e) => setBrand(e.target.value)}
+                  value={brand}
+                  className="w-full h-full p-3 outline-none bg-transparent"
+                  name="brand"
+                >
+                  <option value="">Select brand</option>
+                  <option value="sony">Sony</option>
+                  <option value="canon">Canon</option>
+                  <option value="nikon">Nikon</option>
+                  <option value="panasonic">Panasonic</option>
+                </select>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

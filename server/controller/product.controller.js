@@ -126,7 +126,7 @@ const updateProduct = async (req, res) => {
     // Update product fields
     product.email = email;
     product.itemType = itemType;
-    product.brand = brand || "";
+    product.brand = brand ;
     product.name = name;
     product.description = description;
     product.detailedDescription =
@@ -153,11 +153,12 @@ const updateProduct = async (req, res) => {
       .json({ msg: "Internal server error", error: error.message });
   }
 };
+
 const getSellerProducts = async (req, res) => {
   try {
     const email = req.seller.email;
     const sellername = req.seller.name;
-    console.log("email is :" + email);
+    // console.log("email is :" + email);
 
     const products = await Product.find({ email: email });
     const nameofSeller = await Product.find({ sellername: sellername });

@@ -8,6 +8,7 @@ const sendRentRequest = async (req, res) => {
       productId,
       name,
       email,
+      sellerEmail,
       phoneNumber,
       location,
       startDate,
@@ -27,11 +28,10 @@ const sendRentRequest = async (req, res) => {
     }
 
     const newRequest = await rentRequest.create({
-      product: product._id,
-      seller: req.seller._id,
-      buyer: req.buyer._id, // Use authenticated buyer's ID
+      product: product._id, // Use authenticated buyer's ID
       name,
       email,
+      sellerEmail,
       phoneNumber,
       location,
       startDate,
@@ -83,17 +83,28 @@ const getRentRequestForSeller = async (req, res) => {
     }
 
     const sellerEmail = req.seller.email;
+    console.log(sellerEmail);
 
     // Get all rent requests and populate the product
-    const requests = await rentRequest.find().populate("product");
-
-    // Filter only those requests where product.sellerEmail === sellerEmail
-    const sellerRequests = requests.filter(
-      (req) => req.product && req.product.sellerEmail === sellerEmail
-    );
+    const sellerRequests = await rentRequest
+      .find({ sellerEmail: sellerEmail })
+      .populate("product");
     console.log("seller:", sellerRequests);
 
     return res.status(200).json(sellerRequests);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "internal server error" });
+  }
+};
+
+const updateRequest = async (req, res) => {
+  const { status } = req.body;
+  try {
+    const updated = await rentRequest.findByIdAndUpdate(req.params.id, {
+      status,
+    });
+    return res.status(200).json({ msg: "requuest updated", updated });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "internal server error" });
@@ -105,4 +116,5 @@ module.exports = {
   getRentrequest,
   getRentrequestForBuyer,
   getRentRequestForSeller,
+  updateRequest,
 };
