@@ -1,12 +1,12 @@
 const express = require("express");
-const { Checkout } = require("../models/checkoutProduct.model");
 const {
-  checkouts,
-  getCheckoutById,
+  verifyPayment,
+  createRazorPayOrder,
 } = require("../controller/checkout.controller");
 
 const CheckoutRouter = express.Router();
 
-CheckoutRouter.post("/createCheckout", checkouts);
+CheckoutRouter.post("/createOrder", createRazorPayOrder);
+CheckoutRouter.post("/verifyPayment", verifyPayment);
 
 module.exports = { CheckoutRouter };

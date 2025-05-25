@@ -16,6 +16,7 @@
     "axios": "^1.8.4",
     "bcrypt": "^5.1.1",
     "chart.js": "^4.4.9",
+    "lucide-react": "^0.511.0",
     "motion": "^12.12.1",
     "navigate": "^0.3.6",
     "nodemailer": "^7.0.2",

@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import CheckoutCard from "../components/CheckoutCard";
-import { useState, useEffect } from "react";
 
+// Ensure Razorpay script is loaded
 const CheckOut = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -62,12 +62,27 @@ const CheckOut = () => {
         return;
       }
 
-      // Simulate a checkout API call (replace with actual payment integration)
-      await axios.post(
-        "http://localhost:4000/api/checkout",
+      // Calculate total amount (same logic as CheckoutCard.jsx)
+      const dayDiff = rentRequest
+        ? Math.ceil(
+            (new Date(rentRequest.endDate) - new Date(rentRequest.startDate)) /
+              (1000 * 60 * 60 * 24)
+          )
+        : 1;
+      const baseRate = product?.rate || 500;
+      const addonCost = dayDiff > 1 ? (dayDiff - 1) * 100 : 0;
+      const deliveryFee = 200;
+      const cautionDeposit = product?.cautionDeposit || 0;
+      const totalPayable =
+        (baseRate + addonCost + deliveryFee + cautionDeposit) * 100; // Convert to paise
+
+      // Create Razorpay order
+      const response = await axios.post(
+        "http://localhost:4000/api/checkout/createOrder",
         {
           rentRequestId: rentRequest._id,
-          productId: id,
+          ProductId: id,
+          amount: totalPayable, // Amount in paise
         },
         {
           headers: {
@@ -75,10 +90,67 @@ const CheckOut = () => {
           },
         }
       );
-      toast.success("Checkout completed successfully");
-      navigate("/my-bookings");
+
+      const { orderId, amount: orderAmount, currency } = response.data;
+
+      // Razorpay options
+      const options = {
+        key: "rzp_test_QgNiku4DkATwmt", // Use env variable or fallback to test key
+        amount: orderAmount,
+        currency: currency,
+        name: "GearBox",
+        description: `Payment for renting ${product.name}`,
+        order_id: orderId,
+        handler: async function (response) {
+          try {
+            // Verify payment
+            const verifyResponse = await axios.post(
+              "http://localhost:4000/api/checkout/verifyPayment",
+              {
+                rentRequestId: rentRequest._id,
+                ProductId: id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            if (verifyResponse.data.message === "Checkout created") {
+              toast.success("Payment successful! Checkout completed.");
+              navigate("/");
+            } else {
+              toast.error("Payment verification failed.");
+            }
+          } catch (error) {
+            toast.error(
+              error.response?.data?.msg || "Failed to verify payment"
+            );
+          }
+        },
+        // prefill: {
+        //   name: "Customer Name", // Replace with actual user data if available
+        //   email: "customer@example.com",
+        //   contact: "9999999999",
+        // },
+        theme: {
+          color: "#df1b1b",
+        },
+      };
+
+      // Initialize Razorpay
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
+      rzp.on("payment.failed", function (response) {
+        toast.error(`Payment failed: ${response.error.description}`);
+      });
     } catch (error) {
-      toast.error(error.response?.data?.msg || "Failed to complete checkout");
+      toast.error(error.response?.data?.msg || "Failed to create order");
     }
   };
 

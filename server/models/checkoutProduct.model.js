@@ -9,6 +9,9 @@ const checkoutSchema = new mongoose.Schema({
   cautionDeposit: Number,
   deliveryFee: Number,
   totalPay: Number,
+  paymentId: String, // Razorpay payment ID
+  orderId: String, // Razorpay order ID
+  status: String, // Payment status (e.g., Captured, Failed)
 });
 
 const Checkout = mongoose.model("Checkout", checkoutSchema);
