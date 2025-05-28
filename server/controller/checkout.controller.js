@@ -3,6 +3,8 @@ const { Checkout } = require("../models/checkoutProduct.model");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 
+const { rentRequest } = require("../models/rentRequest.model");
+
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID, // Ensure test key is used
   key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -68,6 +70,12 @@ const verifyPayment = async (req, res) => {
       orderId: razorpay_order_id,
       status: "captured",
     });
+
+    await rentRequest.findByIdAndUpdate(
+      rentRequestId,
+      { status: "Booked", paymentStatus: "Paid" },
+      { new: true }
+    );
 
     res.status(201).json({ message: "Checkout created", data: newCheckout });
   } catch (error) {

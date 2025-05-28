@@ -28,7 +28,7 @@ const Items = () => {
   return (
     <div className="flex flex-col justify-center items-center py-8 px-4">
       {/* Informational Text */}
-      <div className="text-white text-xl sm:text-2xl font-normal font-['Montserrat'] tracking-wide text-center mb-6">
+      <div className=" textitem text-white text-xl sm:text-2xl font-normal font-['Montserrat'] tracking-wide text-center mb-6">
         We Provide These High-Quality Photography Tools
       </div>
 

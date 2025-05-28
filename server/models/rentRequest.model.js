@@ -8,7 +8,7 @@ const rentRequestSchema = new mongoose.Schema({
   },
   name: String,
   email: String,
-  sellerEmail:String,
+  sellerEmail: String,
   phoneNumber: String,
   location: String,
   pincode: String,
@@ -17,9 +17,16 @@ const rentRequestSchema = new mongoose.Schema({
   endDate: Date,
   status: {
     type: String,
-    enum: ["pending", "approved", "rejected"],
+    enum: ["pending", "approved", "rejected", "Booked"],
     default: "pending",
   },
+
+  paymentStatus: {
+    type: String,
+    enum: ["Pending", "Paid"],
+    default: "Pending",
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,

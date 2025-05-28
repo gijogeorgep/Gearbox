@@ -122,7 +122,7 @@ const CheckOut = () => {
 
             if (verifyResponse.data.message === "Checkout created") {
               toast.success("Payment successful! Checkout completed.");
-              navigate("/");
+              navigate("/mybooking");
             } else {
               toast.error("Payment verification failed.");
             }

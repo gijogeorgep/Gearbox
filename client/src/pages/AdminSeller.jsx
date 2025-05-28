@@ -76,6 +76,7 @@ const AdminSeller = () => {
           <span>Sl No</span>
           <span>Username</span>
           <span>Items</span>
+
           <span>Email</span>
         </div>
 
@@ -85,14 +86,13 @@ const AdminSeller = () => {
           {sellers && sellers.length > 0 ? (
             sellers.map((seller, index) => (
               <div
-                key={seller._id || index}
+                key={seller.sellerId || index}
                 className="flex justify-evenly mr-10 gap-20 p-4 mb-4 bg-white/10 rounded-[13px] border border-white/10 backdrop-blur-[0px] text-white font-medium"
               >
                 <span>{index + 1}</span>
-                <span>{seller.username || "N/A"}</span>
-                <span>{seller.products?.length || 0}</span>{" "}
-                {/* Display number of products */}
-                <span>{seller.email || "N/A"}</span>
+                <span>{seller.sellerUsername || "N/A"}</span>
+                <span>{seller.products?.length || 0}</span>
+                <span>{seller.products.productName}</span>
               </div>
             ))
           ) : (

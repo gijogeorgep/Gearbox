@@ -31,7 +31,7 @@ const AdminHome = () => {
           </div>
           {adminName && (
             <p className="text-2xl mt-6 text-white/70 font-normal">
-              ADMIN:{" "}
+              ADMIN:{""}
               <span className="text-white font-semibold uppercase">
                 {adminName}
               </span>

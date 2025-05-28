@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const MyBooking = () => {
   const [mybooking, setMybooking] = useState([]);
   const navigate = useNavigate();
+
   const fetchRequests = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -75,7 +76,11 @@ const MyBooking = () => {
                   <span>{req.status || "Pending"}</span>
                   <div className="flex flex-col gap-5">
                     <div className="flex gap-4 mt-2">
-                      {req.status === "Approved" ? (
+                      {req.status === "Booked" ? (
+                        <span className="bg-[#0caf3a] text-white text-xs px-4 py-2 rounded-[10px] font-[Montserrat] tracking-wide">
+                          Booked
+                        </span>
+                      ) : req.status === "Approved" ? (
                         <div className="flex flex-col items-center gap-2">
                           <span className="bg-[#0caf3a] text-white text-xs px-4 py-2 rounded-[10px] font-[Montserrat] tracking-wide">
                             Approved

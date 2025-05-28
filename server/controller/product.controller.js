@@ -126,7 +126,7 @@ const updateProduct = async (req, res) => {
     // Update product fields
     product.email = email;
     product.itemType = itemType;
-    product.brand = brand ;
+    product.brand = brand;
     product.name = name;
     product.description = description;
     product.detailedDescription =
@@ -213,7 +213,7 @@ const getSellersWithProductsforAdmin = async (req, res) => {
     const result = await Product.aggregate([
       {
         $lookup: {
-          from: "sellers", // must be the name of the Seller collection (lowercase and plural by default)
+          from: "sellers",
           localField: "email",
           foreignField: "email",
           as: "sellerDetails",
@@ -223,24 +223,39 @@ const getSellersWithProductsforAdmin = async (req, res) => {
         $unwind: "$sellerDetails",
       },
       {
+        $group: {
+          _id: "$sellerDetails._id",
+          sellerUsername: { $first: "$sellerDetails.username" },
+          sellerEmail: { $first: "$sellerDetails.email" },
+          sellerPhone: { $first: "$sellerDetails.phone" },
+          products: {
+            $push: {
+              productName: "$name",
+              itemType: "$itemType",
+            },
+          },
+        },
+      },
+      {
         $project: {
           _id: 0,
-          sellerUsername: "$sellerDetails.username",
-          sellerEmail: "$sellerDetails.email",
-          sellerPhone: "$sellerDetails.phone",
-          productName: "$name",
-          itemType: 1,
+          sellerId: "$_id",
+          sellerUsername: 1,
+          sellerEmail: 1,
+          sellerPhone: 1,
+          products: 1,
         },
       },
     ]);
 
-    res.status(200).json(result);
+    res.status(200).json({
+      sellers: result,
+    });
   } catch (error) {
     console.error("Error fetching sellers with products:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 module.exports = {
   UploadProduct,
   getAllProduct,

@@ -133,10 +133,6 @@ const Navbar = () => {
           </div>
         )}
       </div>
-
-      <div className="mt-2 w-full flex justify-center">
-        <div className="w-full max-w-[1400px] h-px bg-white"></div>
-      </div>
     </>
   );
 };

@@ -72,8 +72,8 @@ const Cards = ({ product }) => {
           </p>
         </div>
 
-        {/* Location with Enhanced Icon */}
-        <div className="flex items-center gap-2 mb-3 px-2 py-1.5 bg-white/5 rounded-lg backdrop-blur-sm">
+        {/* Location with Enhanced Icon - Removed gray background */}
+        <div className="flex items-center gap-2 mb-3 px-2 py-1.5">
           <div className="flex-shrink-0 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
             <img
               width="10"
@@ -118,7 +118,7 @@ const Cards = ({ product }) => {
               RENT
             </span>
             {/* Button shine effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700"></div>
+            <div className="absolute inset-0  transform -skew-x-12 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700"></div>
           </button>
         </div>
       </div>
