@@ -4,10 +4,14 @@ const productSchema = new mongoose.Schema({
   email: {
     type: String,
   },
-  sellername:{
-    type:String,
-
+  sellername: {
+    type: String,
   },
+
+  sellerPhone: {
+    type: Number,
+  },
+
   itemType: {
     type: String,
     required: true,

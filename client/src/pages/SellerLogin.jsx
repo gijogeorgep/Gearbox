@@ -13,6 +13,11 @@ const SellerLogin = () => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
+    if (!username || !password) {
+      alert("Please fill in both username and password!");
+      return;
+    }
+
     try {
       const response = await axios.post(
         "http://localhost:4000/api/seller/login",

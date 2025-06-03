@@ -5,6 +5,7 @@ const {
   getRentrequestForBuyer,
   getRentRequestForSeller,
   updateRequest,
+  countrequest,
 } = require("../controller/rentRequest.controller");
 const { authenticateBuyer, authenticateSeller } = require("../middleware/auth");
 
@@ -23,6 +24,7 @@ rentRequestRouter.get(
   getRentRequestForSeller
 );
 
+rentRequestRouter.get("/count", countrequest);
 rentRequestRouter.put("/update/:id", updateRequest);
 
 module.exports = { rentRequestRouter };

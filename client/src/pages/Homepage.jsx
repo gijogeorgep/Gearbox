@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
 import Tagline from "../components/Tagline";
 import Hero from "../components/Hero";
@@ -7,6 +7,8 @@ import FilterItem from "../components/FilterItem";
 import Cards from "../components/Cards";
 import axios from "axios";
 import Footer from "../components/Footer";
+
+import AboutUs from "../components/AboutUs";
 
 const Homepage = () => {
   const [products, setProducts] = useState([]);
@@ -30,6 +32,14 @@ const Homepage = () => {
       setProducts(res.data.products);
     } catch (error) {
       console.error("Error fetching products:", error);
+    }
+  };
+
+  const serviceRef = useRef(null);
+
+  const handleScrollToService = () => {
+    if (serviceRef.current) {
+      serviceRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -60,7 +70,7 @@ const Homepage = () => {
 
   return (
     <div className="bg-[#0C0A0B] min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar onserviceClick={handleScrollToService} />
       <Tagline />
       <Hero />
       <Items />
@@ -76,6 +86,12 @@ const Homepage = () => {
           </p>
         )}
       </div>
+      {/* <div ref={serviceRef}>
+        <Service />
+      </div> */}
+
+      <AboutUs />
+
       <Footer />
     </div>
   );

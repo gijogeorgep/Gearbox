@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SellerDasboardSidebar from "../components/SellerDasboardSidebar";
 import Navbar from "../components/Navbar";
 import axios from "axios";
@@ -7,14 +7,12 @@ const SellItem = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [brand, setBrand] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-
   const [smallImage1, setSmallImage1] = useState(null);
   const [smallImage2, setSmallImage2] = useState(null);
-
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [descriptionPoints, setDescriptionPoints] = useState(["", ""]); // Initialize with two points
+  const [descriptionPoints, setDescriptionPoints] = useState(["", ""]);
   const [rate, setRate] = useState(100);
   const [cautionDeposit, setCautionDeposit] = useState(100);
   const [tutorialLink, setTutorialLink] = useState("");
@@ -22,22 +20,52 @@ const SellItem = () => {
   const [uploadingMainImage, setUploadingMainImage] = useState(false);
   const [uploadingSmall1, setUploadingSmall1] = useState(false);
   const [uploadingSmall2, setUploadingSmall2] = useState(false);
-  const [sellerData, setSellerData] = useState();
-  const uploadImageToCloudinary = async (file) => {
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "gearbox_cloudinary");
-    data.append("cloud_name", "dztx4i2re");
+  const [sellerData, setSellerData] = useState(null);
 
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/dztx4i2re/image/upload",
-      {
-        method: "POST",
-        body: data,
+  // Fetch seller data on component mount
+  useEffect(() => {
+    const fetchSellerData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          "http://localhost:4000/api/seller/sellerprofile",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setSellerData(response.data);
+      } catch (error) {
+        console.error("Failed to fetch seller data:", error);
+        alert("Failed to load seller profile. Try again.");
       }
-    );
-    const json = await res.json();
-    return json.secure_url;
+    };
+    fetchSellerData();
+  }, []);
+
+  const uploadImageToCloudinary = async (file) => {
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "gearbox_cloudinary");
+      data.append("cloud_name", "dztx4i2re");
+
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dztx4i2re/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      if (!res.ok) throw new Error(`Upload failed with status: ${res.status}`);
+      const json = await res.json();
+      if (!json.secure_url)
+        throw new Error("No secure URL returned from Cloudinary");
+      console.log("Uploaded image URL:", json.secure_url);
+      return json.secure_url;
+    } catch (err) {
+      console.error("Image upload failed", err);
+      throw err;
+    }
   };
 
   const handleImageChange = async (
@@ -92,18 +120,14 @@ const SellItem = () => {
       return;
     }
 
+    if (!sellerData) {
+      alert("Seller data not loaded. Please try again.");
+      return;
+    }
+
     setIsUploading(true);
     try {
       const token = localStorage.getItem("token");
-      console.log("Token:", token);
-      const response = await axios.get(
-        "http://localhost:4000/api/seller/sellerprofile",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setSellerData(response.data);
-
       const formData = {
         email: sellerData.email,
         itemType: selectedItem,
@@ -112,23 +136,45 @@ const SellItem = () => {
         description,
         detailedDescription: descriptionPoints.filter(
           (point) => point.trim() !== ""
-        ), // Filter out empty points
+        ),
         imageUrl,
         smallImages: [smallImage1, smallImage2].filter(Boolean),
         rate,
         location,
         cautionDeposit,
         tutorialLink,
+        sellername: sellerData.username || "", // Adjust based on your seller profile response
       };
-      // const token = localStorage.getItem("token"); // replace with your token key
 
-      await axios.post("http://localhost:4000/api/product/create", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:4000/api/product/create",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       alert("Item uploaded successfully!");
+      console.log("Response:", response.data);
+
+      // Update state with saved product’s small images to ensure consistency
+      const savedSmallImages = response.data.newProduct?.smallImages || [];
+      setSmallImage1(savedSmallImages[0] || null);
+      setSmallImage2(savedSmallImages[1] || null);
+
+      // Optional: Reset other form fields
+      setSelectedItem("");
+      setBrand("");
+      setName("");
+      setDescription("");
+      setDescriptionPoints(["", ""]);
+      setLocation("");
+      setRate(100);
+      setCautionDeposit(100);
+      setTutorialLink("");
+      setImageUrl(""); // Optional: Reset main image or keep for display
     } catch (error) {
       console.error("Submit error:", error);
       alert("Failed to submit. Try again.");
@@ -142,11 +188,6 @@ const SellItem = () => {
       <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-6">
         {/* Sidebar */}
         <div className="w-full lg:w-60 bg-white/10 rounded-xl border border-white/10 backdrop-blur-sm flex flex-col items-center py-6">
-          <img
-            src="https://placehold.co/120x120"
-            alt="Profile"
-            className="w-24 h-24 sm:w-28 sm:h-28 rounded-full outline-[4px] outline-[#3b3939]"
-          />
           <SellerDasboardSidebar />
         </div>
 
@@ -210,6 +251,9 @@ const SellItem = () => {
                         src={imageUrl}
                         alt="Uploaded Thumbnail"
                         className="w-24 h-24 object-cover rounded"
+                        onError={() =>
+                          console.log("Failed to load Main Image:", imageUrl)
+                        }
                       />
                       <p className="text-sm text-white/70">Click to change</p>
                     </>
@@ -224,7 +268,6 @@ const SellItem = () => {
                       <p>Upload Thumbnail</p>
                     </>
                   )}
-
                   <input
                     type="file"
                     className="hidden"
@@ -241,6 +284,21 @@ const SellItem = () => {
                 <label className="w-36 h-36 bg-white/10 border border-white/20 rounded-xl p-2 flex flex-col items-center justify-center cursor-pointer">
                   {uploadingSmall1 ? (
                     <p>Uploading...</p>
+                  ) : smallImage1 ? (
+                    <>
+                      <img
+                        src={smallImage1}
+                        alt="Uploaded Small Image 1"
+                        className="w-24 h-24 object-cover rounded"
+                        onError={() =>
+                          console.log(
+                            "Failed to load Small Image 1:",
+                            smallImage1
+                          )
+                        }
+                      />
+                      <p className="text-sm text-white/70">Click to change</p>
+                    </>
                   ) : (
                     <>
                       <img
@@ -265,6 +323,21 @@ const SellItem = () => {
                 <label className="w-36 h-36 bg-white/10 border border-white/20 rounded-xl p-2 flex flex-col items-center justify-center cursor-pointer">
                   {uploadingSmall2 ? (
                     <p>Uploading...</p>
+                  ) : smallImage2 ? (
+                    <>
+                      <img
+                        src={smallImage2}
+                        alt="Uploaded Small Image 2"
+                        className="w-24 h-24 object-cover rounded"
+                        onError={() =>
+                          console.log(
+                            "Failed to load Small Image 2:",
+                            smallImage2
+                          )
+                        }
+                      />
+                      <p className="text-sm text-white/70">Click to change</p>
+                    </>
                   ) : (
                     <>
                       <img
@@ -359,7 +432,6 @@ const SellItem = () => {
               {/* Rate and Caution */}
               <span>Rate</span>
               <div className="flex flex-col gap-6 mb-6">
-                {/* Rate Section */}
                 <div className="w-[220px] h-[66px] bg-[#d9d9d9]/10 rounded-lg flex items-center justify-between px-4">
                   <div className="flex items-center gap-2">
                     <img
@@ -387,7 +459,6 @@ const SellItem = () => {
                   </div>
                 </div>
 
-                {/* Caution Deposit Section */}
                 <span>Caution Deposit </span>
                 <div className="w-[220px] h-[66px] bg-[#d9d9d9]/10 rounded-lg flex items-center justify-between px-4">
                   <div className="flex items-center gap-2">

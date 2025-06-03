@@ -7,7 +7,7 @@ const {
   getProductsCount,
   getProductItemTypes,
   getSellersWithProductsforAdmin,
-  updateProductList,
+
   updateProduct,
 } = require("../controller/product.controller");
 const { Product } = require("../models/product.model");

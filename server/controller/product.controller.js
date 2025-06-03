@@ -16,6 +16,7 @@ const UploadProduct = async (req, res) => {
       tutorialLink,
       email,
       sellername,
+      sellerPhone,
     } = req.body);
 
     console.log(item);
@@ -34,6 +35,7 @@ const UploadProduct = async (req, res) => {
       tutorialLink,
       email,
       sellername,
+      sellerPhone,
     });
 
     res
@@ -158,6 +160,9 @@ const getSellerProducts = async (req, res) => {
   try {
     const email = req.seller.email;
     const sellername = req.seller.name;
+    const sellerphone = req.seller.phone;
+    console.log(sellerphone);
+
     // console.log("email is :" + email);
 
     const products = await Product.find({ email: email });

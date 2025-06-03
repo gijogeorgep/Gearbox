@@ -218,11 +218,7 @@ const UpdateItem = () => {
       <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-6">
         {/* Sidebar */}
         <div className="w-full lg:w-60 bg-white/10 rounded-xl border border-white/10 backdrop-blur-sm flex flex-col items-center py-6">
-          <img
-            src="https://placehold.co/120x120"
-            alt="Profile"
-            className="w-24 h-24 sm:w-28 sm:h-28 rounded-full outline-[4px] outline-[#3b3939]"
-          />
+          
           <SellerDasboardSidebar />
         </div>
 

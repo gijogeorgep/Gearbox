@@ -5,6 +5,7 @@ const sellerScheme = new mongoose.Schema({
   username: String,
   phone: Number,
   password: String,
+  profileImg: String,
   confirmpassword: String,
   role: { type: String, enum: ["admin", "seller"], default: "seller" },
 });

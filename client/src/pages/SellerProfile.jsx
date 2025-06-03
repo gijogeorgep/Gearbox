@@ -5,12 +5,13 @@ import "../components/fonts.css";
 import dashboardbg from "../assets/dashboardbg.png";
 import SellerDasboardSidebar from "../components/SellerDasboardSidebar";
 import { useNavigate } from "react-router-dom";
+
 const SellerProfile = () => {
   const [sellerData, setSellerData] = useState(null);
-
   const navigate = useNavigate();
+
   const logout = () => {
-    const confirmLogout = window.confirm("Are you sure you want to logout");
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
     if (confirmLogout) {
       localStorage.removeItem("token");
       navigate("/sellerlogin");
@@ -20,11 +21,10 @@ const SellerProfile = () => {
   useEffect(() => {
     const fetchSellerProfile = async () => {
       try {
-        const token = localStorage.getItem("token"); // or sellerToken
+        const token = localStorage.getItem("token");
         if (!token) {
           navigate("/sellerlogin");
         }
-        console.log("Token:", token);
 
         const response = await axios.get(
           "http://localhost:4000/api/seller/sellerprofile",
@@ -33,7 +33,6 @@ const SellerProfile = () => {
           }
         );
         setSellerData(response.data);
-        console.log(sellerData);
       } catch (err) {
         console.error("Error fetching seller profile", err);
       }
@@ -44,6 +43,7 @@ const SellerProfile = () => {
 
   return (
     <div className="relative min-h-screen bg-[#0C0A0B] overflow-hidden">
+      {/* Background image with overlay */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-10 z-0"
         style={{ backgroundImage: `url(${dashboardbg})` }}
@@ -51,51 +51,110 @@ const SellerProfile = () => {
 
       <div className="relative z-10">
         <Navbar />
-        <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-6">
-          <div className="w-full lg:w-60 bg-white/10 rounded-xl border border-white/10 backdrop-blur-sm flex flex-col items-center py-6">
-            <img
-              src="https://placehold.co/120x120"
-              alt="Profile"
-              className="w-24 h-24 sm:w-28 sm:h-28 rounded-full outline-[4px] outline-[#3b3939]"
-            />
 
+        <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-6">
+          {/* Sidebar */}
+          <div className="w-full lg:w-60 bg-white/10 rounded-xl border border-white/10 backdrop-blur-sm flex flex-col items-center py-6">
+            {/* Profile Image */}
+
+            {/* Sidebar Buttons */}
             <SellerDasboardSidebar />
           </div>
+          {/* Profile content */}
 
           <div className="flex-1 flex justify-center items-center">
-            <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] max-w-4xl bg-white/10 p-4 sm:p-6 rounded-xl border border-white/10 backdrop-blur-sm flex flex-col justify-center items-center space-y-4 text-white">
-              {/* Logout positioned absolutely inside the white box */}
-              <div className="absolute top-2 right-4">
-                <div className="flex flex-col ">
-                  <img
-                    onClick={logout}
-                    width="28"
-                    height="28"
-                    src="https://img.icons8.com/ios-filled/50/FFFFFF/logout-rounded-up.png"
-                    alt="logout-rounded-up"
-                  />
+            <div className="relative w-full max-w-3xl bg-white/10 p-6 sm:p-8 rounded-xl border border-white/10 backdrop-blur-sm shadow-lg text-white">
+              {/* Profile photo at top center */}
+              <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+                {/* Profile photo */}
+                <div className="relative w-32 h-32 rounded-full border-4 border-white/20 overflow-hidden flex items-center justify-center bg-white/10 text-center">
+                  {/* If no profile image, show the text */}
+                  <span className="text-sm text-gray-300 px-2 text-center">
+                    Add Profile Photo
+                  </span>
+
+                  {/* Upload icon */}
+                  <label
+                    htmlFor="profile-upload"
+                    className="absolute bottom-0 right-0 bg-white/20 p-1 rounded-full cursor-pointer hover:bg-white/40 transition duration-200"
+                    title="Upload Photo"
+                  >
+                    <img
+                      width="24"
+                      height="24"
+                      src="https://img.icons8.com/ios-filled/50/FFFFFF/plus-math.png"
+                      alt="Upload"
+                    />
+                    <input
+                      type="file"
+                      id="profile-upload"
+                      className="hidden"
+                      // Add your upload handler here
+                    />
+                  </label>
                 </div>
               </div>
 
-              <h1 className="text-2xl font-semibold">Seller Profile</h1>
+              {/* Edit and Logout icons */}
+              <div className="absolute top-3 left-3 right-3 flex justify-between items-center">
+                <button
+                  className="p-2 rounded-full hover:bg-white/20 transition duration-200"
+                  title="Edit Profile"
+                >
+                  <img
+                    width="28"
+                    height="28"
+                    src="https://img.icons8.com/sf-regular/FFFFFF/48/create-new.png"
+                    alt="Edit"
+                  />
+                </button>
+
+                <button
+                  onClick={logout}
+                  className="p-2 rounded-full hover:bg-white/20 transition duration-200"
+                  title="Logout"
+                >
+                  <img
+                    width="28"
+                    height="28"
+                    src="https://img.icons8.com/ios-filled/50/FFFFFF/logout-rounded-up.png"
+                    alt="Logout"
+                  />
+                </button>
+              </div>
+
+              {/* Seller Profile heading */}
+              <h1 className="text-3xl font-bold text-center mb-6 mt-12">
+                {" "}
+                {/* added mt-12 to make space for photo */}
+                Seller Profile
+              </h1>
 
               {sellerData ? (
-                <div className="space-y-2 text-center">
+                <div className="space-y-3 text-center text-lg">
                   <p>
-                    <strong>Name:</strong> {sellerData.name}
+                    <span className="font-semibold text-gray-300">Name:</span>{" "}
+                    {sellerData.name}
                   </p>
                   <p>
-                    <strong>Email:</strong> {sellerData.email}
+                    <span className="font-semibold text-gray-300">Email:</span>{" "}
+                    {sellerData.email}
                   </p>
                   <p>
-                    <strong>Username:</strong> {sellerData.username}
+                    <span className="font-semibold text-gray-300">
+                      Username:
+                    </span>{" "}
+                    {sellerData.username}
                   </p>
                   <p>
-                    <strong>Phone:</strong> {sellerData.phone}
+                    <span className="font-semibold text-gray-300">Phone:</span>{" "}
+                    {sellerData.phone}
                   </p>
                 </div>
               ) : (
-                <p>Loading...</p>
+                <p className="text-center animate-pulse text-gray-300">
+                  Loading...
+                </p>
               )}
             </div>
           </div>

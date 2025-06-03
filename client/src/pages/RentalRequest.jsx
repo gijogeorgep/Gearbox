@@ -29,7 +29,19 @@ const RentalRequest = () => {
 
   useEffect(() => {
     fetchRentRequest();
+    requestCount();
   }, []);
+
+  const requestCount = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:4000/api/rentrequest/count"
+      );
+      console.log(response.count);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const updateRequestStatus = async (requestId, status) => {
     const confirmAction = window.confirm(
@@ -71,11 +83,6 @@ const RentalRequest = () => {
           {/* Sidebar */}
           <div className="w-full lg:w-60 bg-white/10 rounded-xl border border-white/10 backdrop-blur-sm flex flex-col items-center py-6">
             {/* Profile Image */}
-            <img
-              src="https://placehold.co/120x120"
-              alt="Profile"
-              className="w-24 h-24 sm:w-28 sm:h-28 rounded-full outline-[4px] outline-[#3b3939]"
-            />
 
             {/* Sidebar Buttons */}
             <SellerDasboardSidebar />
@@ -113,8 +120,8 @@ const RentalRequest = () => {
                   <span>{req.product?.name}</span>
                   <span>{req.location}</span>
                   <span>{req.phoneNumber}</span>
-                  <span>{req.startDate}</span>
-                  <span>{req.endDate}</span>
+                  <span>{new Date(req.startDate).toLocaleString()}</span>
+                  <span>{new Date(req.endDate).toLocaleString()}</span>
 
                   {/* Approve / Reject Buttons */}
                   <div className="flex flex-col gap-1 text-center">

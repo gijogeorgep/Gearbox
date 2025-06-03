@@ -71,8 +71,8 @@ const MyBooking = () => {
                   <span>{req.product?.itemType}</span>
                   <span>{req.product?.name}</span>
                   <span>{req.location}</span>
-                  <span>{req.startDate}</span>
-                  <span>{req.endDate}</span>
+                  <span>{new Date(req.startDate).toLocaleString()}</span>
+                  <span>{new Date(req.endDate).toLocaleString()}</span>
                   <span>{req.status || "Pending"}</span>
                   <div className="flex flex-col gap-5">
                     <div className="flex gap-4 mt-2">

@@ -30,12 +30,12 @@ import MyBooking from "./pages/MyBooking";
 import AdminBuyer from "./pages/AdminBuyer";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import CheckOut from "./pages/CheckOut";
+import ServicePage from "./pages/ServicePage";
 
 function App() {
   const [admin, setAdmin] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  // const [buyer, setBuyer] = useState(null);
-  // const [seller, setSeller] = useState(null);
+
 
   const fetchAdmin = async () => {
     try {
@@ -52,19 +52,7 @@ function App() {
     }
   };
 
-  // const fetchSeller = async () => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) return;
 
-  //   try {
-  //     const response = await axios.get("http://localhost:4000/api/seller", {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     });
-  //     setSeller(response.data.seller);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   useEffect(() => {
     fetchAdmin();
@@ -136,7 +124,8 @@ function App() {
 
               <Route path="/checkout/:id" element={<CheckOut />} />
 
-              <Route path="returnpolicy" element={<ReturnPolicy />} />
+              <Route path="/returnpolicy" element={<ReturnPolicy />} />
+              <Route path="/service" element={<ServicePage />} />
             </Routes>
           </BrowserRouter>
         </Admincontext.Provider>

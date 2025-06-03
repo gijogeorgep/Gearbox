@@ -38,6 +38,9 @@ const RentItem = () => {
     fetchProduct();
   }, [id]);
 
+
+ 
+
   const validateForm = () => {
     let isValid = true;
 
@@ -120,7 +123,6 @@ const RentItem = () => {
         name,
         email,
         sellerEmail: product.email,
-        phoneNumber,
         location: locationInput,
         startDate,
         endDate,
@@ -171,20 +173,38 @@ const RentItem = () => {
         {/* Left Section: Image Card + UL */}
         <div className="flex flex-col gap-4 w-full md:w-auto">
           {/* Image Card */}
-          <div className="relative w-full max-w-[278px] mx-auto bg-gradient-to-b from-[#151515] to-[#534f4f] rounded-[20px] p-3 shadow-inner shadow-[#00000040]">
-            <img
-              src={product?.imageUrl}
-              alt={product?.name}
-              className="w-full h-[160px] object-cover rounded-[15px]"
-            />
-            <div className="mt-3 text-base font-medium font-['Montserrat'] tracking-wide text-center">
-              {product?.name || "Product Name"}
+          <div className="relative w-full max-w-[280px] mx-auto bg-gradient-to-b from-[#151515] to-[#3f3d3d] rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-[1.02] transition-transform duration-300 ease-in-out group cursor-pointer">
+            <div className="overflow-hidden rounded-xl bg-white">
+              <img
+                src={product?.imageUrl}
+                alt={product?.name}
+                className="w-full h-[160px] object-cover rounded-xl group-hover:scale-105 transition-transform duration-300"
+              />
             </div>
-            <div className="text-sm font-normal font-['Montserrat'] tracking-wide text-center">
-              {product?.description || "Product Description"}
+
+            <div className="mt-3 text-center">
+              <h2 className="text-lg font-semibold font-['Montserrat'] tracking-wide text-white">
+                {product?.name || "Product Name"}
+              </h2>
+              <p className="text-sm font-light font-['Montserrat'] tracking-wide text-gray-300 mt-1">
+                {product?.description || "Product Description"}
+              </p>
             </div>
-            <span>{product?.location || "Location"}</span>
+
+            <div className="mt-3 flex items-center justify-center gap-1">
+              <img
+                width="14"
+                height="14"
+                src="https://img.icons8.com/deco-glyph/48/ffffff/marker.png"
+                alt="location"
+                className="opacity-90"
+              />
+              <span className="text-xs text-gray-400 font-light tracking-wide">
+                {product?.location || "Location"}
+              </span>
+            </div>
           </div>
+
           <p className="text-sm">About this item</p>
           {/* UL: Feature List */}
           <ul className="text-sm list-disc list-inside text-white font-light w-full max-w-[278px] mx-auto">
@@ -196,26 +216,24 @@ const RentItem = () => {
           <div className="flex flex-wrap gap-4">
             <div className="relative w-[180px] bg-gradient-to-b from-[#151515] to-[#534f4f] rounded-[20px] p-3 shadow-inner shadow-[#00000040]">
               <img
-                src={
-                  product?.smallImages || "https://via.placeholder.com/180x90"
-                }
-                alt={product?.smallImages}
+                src={product?.smallImages?.[0]}
+                alt={product?.smallImage1}
                 className="w-full h-[90px] object-cover rounded-[15px]"
               />
             </div>
             <div className="relative w-[180px] bg-gradient-to-b from-[#151515] to-[#534f4f] rounded-[20px] p-3 shadow-inner shadow-[#00000040]">
               <img
-                src={
-                  product?.smallImages || "https://via.placeholder.com/180x90"
-                }
-                alt={product?.name}
+                src={product?.smallImages?.[1]}
+                alt={product?.smallImages?.[1]}
                 className="w-full h-[90px] object-cover rounded-[15px]"
               />
             </div>
           </div>
-          <span className="text-sm">Contact Your Seller</span>
-          <div className="w-full max-w-[247.47px] h-[155px] relative mx-auto">
-            <div className="w-full max-w-[247.47px] h-[109.03px] absolute top-[45.97px] bg-[#d9d9d9]/10 rounded-[7.09px]" />
+
+          <span className="font-bold">Contact Your Seller</span>
+
+          <div className="w-full max-w-[247.47px] h-[155px] relative mx-auto mt-6">
+            <div className="w-full max-w-[247.47px] h-[109.03px] absolute top-[45.97px] bg-[#d9d9d9]/10 rounded-[7.09px] " />
             <img
               className="w-[90.33px] h-[85.56px] absolute left-1/2 transform -translate-x-1/2 top-0 rounded-full shadow-[4.09px_6.14px_2.11px_-6.14px_rgba(0,0,0,0.30)] outline outline-[4.09px] outline-[#3b3939]"
               src="https://placehold.co/90x86"
@@ -224,7 +242,9 @@ const RentItem = () => {
             <div className="absolute left-1/2 transform -translate-x-1/2 top-[94.60px] text-white text-[19.02px] font-semibold font-['Montserrat'] tracking-wide text-center">
               {product?.email}
             </div>
+
             <div className="w-[32.07px] h-[31.33px] absolute left-1/2 transform -translate-x-1/2 top-[117.59px] bg-[#d9d9d9]/10 rounded-full">
+              <span>{product.phone} </span>
               <img
                 width="30"
                 height="30"
@@ -232,8 +252,8 @@ const RentItem = () => {
                 alt="phone-disconnected"
               />
             </div>
-            <span>{product?.phone || "Seller Phone"}</span>
           </div>
+
           <div className="flex gap-2 items-center">
             <img
               width="24"
@@ -341,68 +361,6 @@ const RentItem = () => {
                     />
                   </div>
                 </div>
-
-                {/* <div className="max-w-[240px] w-full bg-white/15 backdrop-blur-md border border-white/10 rounded-md p-2.5 text-white space-y-1.5 text-xs font-[montserrat] mx-auto sm:mx-auto transition-transform hover:scale-[1.02]">
-                  <div className="space-y-0.5">
-                    <h2
-                      className="text-sm font-bold text-white tracking-tight truncate"
-                      title={product?.name}
-                    >
-                      {product?.name}
-                    </h2>
-                    <p
-                      className="text-[11px] font-light text-gray-200 tracking-wide line-clamp-1"
-                      title={product?.sellerName}
-                    >
-                      {product?.sellerName || "Seller Name"}
-                    </p>
-                  </div>
-                  <div className="space-y-1.5 px-1.5">
-                    <div className="flex flex-col">
-                      <div className="flex justify-between text-sm font-semibold text-white tracking-tight">
-                        <p>Item Total</p>
-                        <p>₹{product?.rate || 500}</p>
-                      </div>
-                      <span className="text-xs font-light text-gray-200 tracking-wide line-clamp-2">
-                        Rate for 1 day
-                      </span>
-                    </div>
-                    <div className="flex flex-col">
-                      <div className="flex justify-between text-sm font-semibold text-white tracking-tight">
-                        <p>Add On Days</p>
-                        <p>₹{addonCost}</p>
-                      </div>
-
-                      <span className="text-xs font-light text-gray-200 tracking-wide line-clamp-2">
-                        ₹100 increment
-                      </span>
-                    </div>
-                    <div className="flex flex-col">
-                      <div className="flex justify-between text-sm font-semibold text-white tracking-tight">
-                        <p>Caution Deposit</p>
-                        <p>{product?.cautionDeposit}</p>
-                      </div>
-                      <span className="text-xs font-light text-gray-200 tracking-wide line-clamp-2">
-                        {product?.cautionDeposit} return after returning the
-                        item
-                      </span>
-                    </div>
-                    <div className="flex flex-col">
-                      <div className="flex justify-between text-sm font-semibold text-white tracking-tight">
-                        <p>Delivery Fee</p>
-                        <p>₹200</p>
-                      </div>
-                      <span className="text-xs font-light text-gray-200 tracking-wide line-clamp-2">
-                        Free up to 3 km, ₹20/km after
-                      </span>
-                    </div>
-                    <hr className="border-gray-600/20 my-1.5" />
-                    <div className="flex justify-between text-base font-bold text-white tracking-tight bg-white/5 rounded px-1.5 py-0.5">
-                      <p>TO PAY</p>
-                      <p>₹{totalPayable}</p>
-                    </div>
-                  </div>
-                </div> */}
 
                 <CheckoutCard
                   product={product}

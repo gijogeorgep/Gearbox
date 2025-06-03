@@ -37,7 +37,11 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center gap-8 text-white text-xl font-light font-[Montserrat] tracking-wide">
             <Link to="/">HOME</Link>
-            <span>SERVICE</span>
+
+            <Link to="/service">SERVICE</Link>
+            {/* <span className="cursor-pointer" onClick={onserviceClick}>
+              SERVICE
+            </span> */}
 
             <div className="relative flex items-center">
               <span

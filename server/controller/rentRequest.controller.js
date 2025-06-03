@@ -111,10 +111,29 @@ const updateRequest = async (req, res) => {
   }
 };
 
+const countrequest = async (req, res) => {
+  try {
+    const { sellerEmail } = req.body;
+
+    if (!sellerEmail) {
+      return res.status(400).json({ error: "Email is required." });
+    }
+
+    const count = await rentRequest.countDocuments({
+      sellerEmail: sellerEmail,
+    });
+
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error while counting requests." });
+  }
+};
 module.exports = {
   sendRentRequest,
   getRentrequest,
   getRentrequestForBuyer,
   getRentRequestForSeller,
   updateRequest,
+  countrequest,
 };

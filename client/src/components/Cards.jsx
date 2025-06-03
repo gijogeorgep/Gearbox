@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./fonts.css";
-
+import Aos from "aos";
 const Cards = ({ product }) => {
   const navigate = useNavigate();
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -25,8 +25,20 @@ const Cards = ({ product }) => {
     e.target.src = "https://via.placeholder.com/278x160?text=Image+Error";
   };
 
+  useEffect(() => {
+    Aos.init({
+      duration: 800,
+      easing: "ease-in-out",
+      once: true,
+    });
+  }, []);
+
   return (
-    <div className="group w-full max-w-[278px] h-auto relative rounded-2xl bg-gradient-to-br from-[#2a2a2a] via-[#1f1f1f] to-[#0f0f0f] p-5 mx-auto shadow-2xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 hover:scale-[1.02] border border-gray-700/30">
+    <div
+      className="group w-full max-w-[278px] h-auto relative rounded-2xl bg-gradient-to-br from-[#2a2a2a] via-[#1f1f1f] to-[#0f0f0f] p-5 mx-auto shadow-2xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 hover:scale-[1.02] border border-gray-700/30"
+      data-aos="fade-up"
+      data-aos-delay="100"
+    >
       {/* Product Image Container with Enhanced Styling */}
       <div className="relative w-full h-[180px] rounded-xl overflow-hidden bg-white shadow-inner">
         {/* Loading placeholder */}

@@ -37,13 +37,17 @@ const SellerDasboardSidebar = () => {
     }`;
   return (
     <>
+      <img
+        width="96"
+        height="96"
+        src="https://img.icons8.com/color/96/circled-user-male-skin-type-4--v1.png"
+        alt="circled-user-male-skin-type-4--v1"
+      />
       <div className="mt-3 text-white text-base sm:text-lg font-semibold font-[montserrat] text-center">
         {sellerData?.name}
       </div>
 
       <div className="mt-6  flex flex-col gap-5 w-full px-4">
-       
-
         <Link to="/sellerprofile">
           <button className={btnStyle(isActive("/sellerprofile"))}>
             PROFILE
@@ -63,7 +67,7 @@ const SellerDasboardSidebar = () => {
         <Link to="/rentalrequest">
           <button className={btnStyle(isActive("/rentalrequest)"))}>
             <span>RENTAL REQUESTS</span>
-            <span className="w-5 h-5 ml-4 bg-[#df1b1b] text-white text-[10px] font-semibold rounded-full flex items-center justify-center">
+            <span className="w-5 h-5 ml-20  bg-[#df1b1b] text-white text-[10px] font-semibold rounded-full flex items-center justify-center">
               1
             </span>
           </button>

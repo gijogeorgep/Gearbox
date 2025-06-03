@@ -28,10 +28,10 @@ const CheckoutCard = ({ product, startDate, endDate }) => {
             {product?.name || "Product Name"}
           </h2>
           <p
-            className="text-[11px] font-light text-gray-200 tracking-wide line-clamp-1"
-            title={product?.sellerName}
+            className="text-[11px] font-light text-gray-200 tracking-wide line-clamp-1 uppercase"
+            title={product?.sellername}
           >
-            {product?.sellerName || "Seller Name"}
+            {product?.sellername || "Seller Name"}
           </p>
         </div>
         <div className="space-y-1.5 px-1.5">
@@ -72,9 +72,9 @@ const CheckoutCard = ({ product, startDate, endDate }) => {
             </span>
           </div>
           <hr className="border-gray-600/20 my-1.5" />
-          <div className="flex justify-between text-base font-bold text-white tracking-tight bg-white/5 rounded px-1.5 py-0.5">
+          <div className="flex justify-between text-base font-bold text-white tracking-tight bg-white/30 rounded px-1.5 py-0.5">
             <p>TO PAY</p>
-            <p>₹{totalPayable}</p>
+            <p className="text-[#df1b1b]">₹{totalPayable}</p>
           </div>
         </div>
       </div>
