@@ -11,13 +11,17 @@ const sendOtp = async (req, res) => {
     console.log("A");
 
     const { name, username, email } = req.body;
+    console.log(name,username,email);
+
+
+    
     // Check if the email already exists in the Seller collection
     const existingBuyer = await Buyer.findOne({ email });
-
+console.log("A");
     if (existingBuyer) {
       return res.status(400).json({ msg: "Email already registered." });
     }
-
+console.log("A");
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     const transporter = nodemailer.createTransport({
@@ -27,6 +31,7 @@ const sendOtp = async (req, res) => {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
+    console.log("A");
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -34,8 +39,10 @@ const sendOtp = async (req, res) => {
       subject: "Verify your email - Camera Rental App",
       text: `Your OTP code is: ${otp}`,
     };
+    console.log("A");
 
     await transporter.sendMail(mailOptions);
+    console.log("A");
 
     // Save OTP record to the database
     await OtpVerification.create({
@@ -50,7 +57,7 @@ const sendOtp = async (req, res) => {
     return res.status(200).json({ msg: "OTP sent successfully" });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ msg: "Server error" });
+    return res.status(500);
   }
 };
 

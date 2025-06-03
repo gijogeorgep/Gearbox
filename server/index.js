@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
-const port = 4000;
+const port = process.env.port || 4000;
 const { AdminRouter } = require("./router/adminRouter");
 const { connectDb } = require("./config/db");
 const { SellerRouter } = require("./router/sellerRouter");
@@ -30,5 +30,3 @@ app.use("/api/checkout/", CheckoutRouter);
 app.listen(port, () => {
   console.log("server running on http://localhost:4000");
 });
-
-
